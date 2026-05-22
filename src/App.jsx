@@ -7,6 +7,7 @@ import Report from './pages/Report'
 import Billing from './pages/Billing'
 import Order from './pages/Order'
 import Login from './pages/Login2'
+import MenuManagement from './pages/MenuManagement'
 import CustomerMenu from './pages/CustomerMenu'
 
 import { Routes, Route, useLocation } from 'react-router-dom'
@@ -38,6 +39,8 @@ const App = () => {
           <Route path="/report" element={<Report />} />
 
           <Route path="/billing" element={<Billing />} />
+
+          <Route path="/menu/*" element={<MenuManagement />} />
 
           <Route path="/order" element={<Order />} />
 
