@@ -8,6 +8,18 @@ import StarterMenu from "../Mole/StarterMenu";
 import DrinksMenu from "../Mole/DrinksMenu";
 import MainCourse from "../Mole/MainCourse";
 
+ const toggleAvailability = (index) => {
+
+    const updatedDesserts = [...desserts];
+
+    updatedDesserts[index].available =
+      !updatedDesserts[index].available;
+
+    setDesserts(updatedDesserts);
+
+  };
+
+
 const MenuManagement = () => {
 
   const navItems = [

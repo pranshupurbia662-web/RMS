@@ -21,9 +21,9 @@ const DoughnutChart = () => {
 
   const data = {
     labels: [
-      "Dine-In",
-      "Take_Away",
-      "Online",
+      "UPI",
+      "Cash",
+      "card",
       "Other",
     ],
 
@@ -64,7 +64,7 @@ const DoughnutChart = () => {
       <div className="bg-white p-6 rounded-3xl shadow-lg h-[420px] flex flex-col justify-center">
 
         <h2 className="text-2xl font-bold text-[#7B5A11] mb-6 text-center">
-          User Devices
+          Payment Methods
         </h2>
 
         <div className="w-full h-[280px]">
