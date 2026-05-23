@@ -13,7 +13,7 @@ const BreadMenu = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-[#f7f3ef] px-3 sm:px-6 lg:px-8 py-4">
+    <div className="w-full min-h-screen  px-3 sm:px-6 lg:px-8 py-4">
       <div className="text-center mb-8 sm:mb-12">
         <h1 className="uppercase text-3xl sm:text-5xl lg:text-6xl text-[#7B1E1E] font-serif tracking-wide">Bread Menu</h1>
         <p className="text-[#D4A017] text-lg mt-3 sm:mt-4 tracking-[4px]">━━━━━━ ✦ ━━━━━━</p>

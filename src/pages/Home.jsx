@@ -11,7 +11,7 @@ import Desserts from '../atoms/Desserts';
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-[#f7f3ef]">
+    <div className="min-h-screen ">
       {/* Hero/Sidebar section: stacked on mobile, side-by-side on lg+ */}
       <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 items-start px-3 sm:px-4 lg:px-6 pt-4 lg:pt-6">
         {/* Left Sidebar */}

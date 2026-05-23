@@ -16,7 +16,7 @@ const Navbar = () => {
 
   return (
 
-    <div className="w-full bg-[#f7f3ef] border-b border-[#D4A017]/30 shadow-sm">
+    <div className="w-full  border-b border-[#D4A017]/30 shadow-sm">
 
       {/* Top Bar */}
       <div className="flex items-center justify-between px-3 py-2">
@@ -93,7 +93,7 @@ const Navbar = () => {
       {/* Mobile Dropdown */}
       {menuOpen && (
 
-        <div className="md:hidden flex flex-col border-t border-[#D4A017]/20 bg-[#fdfaf6]">
+        <div className="md:hidden flex flex-col border-t border-[#D4A017]/20 ">
 
           {links.map((l) => (
 
