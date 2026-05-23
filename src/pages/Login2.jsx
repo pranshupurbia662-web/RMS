@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login2 = () => {
 
 const navigate = useNavigate();
 
+const [role, setRole] = useState("");
+
 const handleLogin = (e) => {
   e.preventDefault();
 
-  navigate("/dashboard");
+  if (role === "Chef") {
+    navigate("/chef-panel");
+  } else {
+    navigate("/dashboard");
+  }
 };
 
   return (
@@ -150,13 +156,15 @@ const handleLogin = (e) => {
 
               <select
                 required
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
                 className="w-full p-3 rounded-xl border border-gray-300 outline-none text-sm bg-white focus:ring-4 focus:ring-yellow-200 focus:border-[#D4A017] transition"
               >
                 <option value="">Select Role</option>
-                <option>Admin</option>
-                <option>Manager</option>
-                <option>Chef</option>
-                <option>Waiter</option>
+                <option value="Admin">Admin</option>
+                <option value="Manager">Manager</option>
+                <option value="Chef">Chef</option>
+                <option value="Waiter">Waiter</option>
               </select>
 
             </div>

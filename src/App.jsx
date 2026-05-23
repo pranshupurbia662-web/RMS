@@ -9,6 +9,7 @@ import Order from './pages/Order'
 import Login from './pages/Login2'
 import MenuManagement from './pages/MenuManagement'
 import CustomerMenu from './pages/CustomerMenu'
+import ChefPanel from './pages/ChefPanel'
 
 import { Routes, Route, useLocation } from 'react-router-dom'
 
@@ -16,7 +17,10 @@ const App = () => {
 
   const location = useLocation()
 
-  const hideSidebar = location.pathname === "/" || location.pathname === "/login"
+  const hideSidebar =
+  location.pathname === "/" ||
+  location.pathname === "/login" ||
+  location.pathname.startsWith("/chef-panel")
 
   return (
 
@@ -45,6 +49,8 @@ const App = () => {
           <Route path="/order" element={<Order />} />
 
           <Route path="/customer-menu/*" element={<CustomerMenu />} />
+
+          <Route path="/chef-panel/*" element={<ChefPanel />} />
 
         </Routes>
 

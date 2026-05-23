@@ -39,6 +39,31 @@ const Sidebar = () => {
           />
 
         </div>
+        {/* PROFILE SECTION */}
+        
+          <div className="hidden md:flex items-center gap-3 bg-[#F9E4C0] rounded-xl px-3 py-3 mb-4 cursor-pointer">
+
+            <div className="w-10 h-10 rounded-full bg-[#d89216] flex items-center justify-center text-white font-bold ">
+              A
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold text-[#3b260c]">
+                Admin User
+              </h3>
+
+              <p className="text-xs text-[#7b5a11cf]">
+                Admin
+              </p>
+            </div>
+
+          </div>
+
+          <div className="md:hidden flex justify-center mb-4">
+            <div className="w-10 h-10 rounded-full bg-[#d89216] flex items-center justify-center text-white font-bold">
+              A
+            </div>
+          </div>
 
         {/* DASHBOARD */}
 
@@ -212,7 +237,7 @@ const Sidebar = () => {
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-100 text-red-500 hover:bg-red-50 hover:text-red-600 w-full"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-100 text-red-500 hover:bg-red-50 hover:text-red-600 w-full cursor-pointer"
           >
 
             <LogOut size={20} />
