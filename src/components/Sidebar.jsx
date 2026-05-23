@@ -46,7 +46,7 @@ const Sidebar = () => {
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
+              `flex items-center gap-3 p-3 rounded-lg transition-all duration-100
               ${
                 isActive
                   ? "bg-[#F9E4C0] border-r-4 border-[#d89216] shadow-sm"
@@ -65,7 +65,7 @@ const Sidebar = () => {
           <NavLink
             to="/table"
             className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
+              `flex items-center gap-3 p-3 rounded-lg transition-all duration-100
               ${
                 isActive
                   ? "bg-[#F9E4C0] border-r-4 border-[#d89216] shadow-sm"
@@ -84,7 +84,7 @@ const Sidebar = () => {
           <NavLink
             to="/order"
             className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
+              `flex items-center gap-3 p-3 rounded-lg transition-all duration-100
               ${
                 isActive
                   ? "bg-[#F9E4C0] border-r-4 border-[#d89216] shadow-sm"
@@ -104,7 +104,7 @@ const Sidebar = () => {
           <NavLink
             to="/menu"
             className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
+              `flex items-center gap-3 p-3 rounded-lg transition-all duration-100
               ${
                 isActive
                   ? "bg-[#F9E4C0] border-r-4 border-[#d89216] shadow-sm"
@@ -129,7 +129,7 @@ const Sidebar = () => {
           <NavLink
             to="/staff"
             className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
+              `flex items-center gap-3 p-3 rounded-lg transition-all duration-100
               ${
                 isActive
                   ? "bg-[#F9E4C0] border-r-4 border-[#d89216] shadow-sm"
@@ -148,7 +148,7 @@ const Sidebar = () => {
           <NavLink
             to="/billing"
             className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
+              `flex items-center gap-3 p-3 rounded-lg transition-all duration-100
               ${
                 isActive
                   ? "bg-[#F9E4C0] border-r-4 border-[#d89216] shadow-sm"
@@ -167,7 +167,7 @@ const Sidebar = () => {
           <NavLink
             to="/report"
             className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
+              `flex items-center gap-3 p-3 rounded-lg transition-all duration-100
               ${
                 isActive
                   ? "bg-[#F9E4C0] border-r-4 border-[#d89216] shadow-sm"
@@ -187,7 +187,7 @@ const Sidebar = () => {
           <NavLink
             to="/customer-menu"
             className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
+              `flex items-center gap-3 p-3 rounded-lg transition-all duration-100
               ${
                 isActive
                   ? "bg-[#F9E4C0] border-r-4 border-[#d89216] shadow-sm"
@@ -212,7 +212,7 @@ const Sidebar = () => {
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 text-red-500 hover:bg-red-50 hover:text-red-600 w-full"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-100 text-red-500 hover:bg-red-50 hover:text-red-600 w-full"
           >
 
             <LogOut size={20} />

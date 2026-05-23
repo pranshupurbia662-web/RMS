@@ -1,5 +1,11 @@
 import React from "react";
-import { NavLink, Routes, Route } from "react-router-dom";
+import {
+  NavLink,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
 import { Plus } from "lucide-react";
 
 import Desserts from "../Mole/DessertMenu";
@@ -8,22 +14,9 @@ import StarterMenu from "../Mole/StarterMenu";
 import DrinksMenu from "../Mole/DrinksMenu";
 import MainCourse from "../Mole/MainCourse";
 
- const toggleAvailability = (index) => {
-
-    const updatedDesserts = [...desserts];
-
-    updatedDesserts[index].available =
-      !updatedDesserts[index].available;
-
-    setDesserts(updatedDesserts);
-
-  };
-
-
 const MenuManagement = () => {
 
   const navItems = [
-
     {
       name: "Drinks",
       path: "/menu/drinks",
@@ -48,12 +41,10 @@ const MenuManagement = () => {
       name: "Desserts",
       path: "/menu/desserts",
     },
-
   ];
 
   return (
-
-    <div className="w-full min-h-screen bg-[#f7f3ef] p-4 sm:p-6">
+    <div className="w-full min-h-screen  p-4 sm:p-6">
 
       {/* TOP SECTION */}
 
@@ -112,17 +103,12 @@ const MenuManagement = () => {
               to={item.path}
 
               className={({ isActive }) =>
-
                 `px-6 py-3 rounded-2xl text-sm font-semibold transition-all duration-300
-
                 ${
                   isActive
-
                     ? "bg-[#D4A017] text-white shadow-lg scale-105"
-
                     : "bg-gray-50 text-gray-700 border border-gray-200 hover:bg-[#D4A017] hover:text-white hover:border-transparent hover:shadow-md hover:scale-105"
                 }`
-
               }
             >
 
@@ -141,6 +127,13 @@ const MenuManagement = () => {
       <div className="mt-6">
 
         <Routes>
+
+          {/* DEFAULT ROUTE */}
+
+          <Route
+            index
+            element={<Navigate to="drinks" replace />}
+          />
 
           {/* DRINKS */}
 
@@ -182,7 +175,6 @@ const MenuManagement = () => {
       </div>
 
     </div>
-
   );
 };
 

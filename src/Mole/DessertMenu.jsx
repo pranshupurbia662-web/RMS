@@ -28,7 +28,7 @@ const DessertMenu = () => {
 
   return (
 
-    <div className="w-full min-h-screen bg-[#f7f3ef] px-3 sm:px-6 lg:px-8 py-4">
+    <div className="w-full min-h-screen px-3 sm:px-6 lg:px-8 py-4">
 
       <div className="w-full bg-[#fffaf4] rounded-[24px] sm:rounded-[32px] border border-[#D4A017]/30 shadow-md p-4 sm:p-6">
 
