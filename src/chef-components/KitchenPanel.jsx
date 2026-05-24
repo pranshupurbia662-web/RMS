@@ -1,4 +1,4 @@
-import Column from "../components/Column"
+import Column from "./Column"
 import { LogOut } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 

@@ -12,7 +12,13 @@ const handleLogin = (e) => {
 
   if (role === "Chef") {
     navigate("/chef-panel");
-  } else {
+  } 
+  
+  else if (role === "Waiter") {
+    navigate("/waiter-panel");
+  } 
+  
+  else {
     navigate("/dashboard");
   }
 };

@@ -9,7 +9,8 @@ import Order from './pages/Order'
 import Login from './pages/Login2'
 import MenuManagement from './pages/MenuManagement'
 import CustomerMenu from './pages/CustomerMenu'
-import ChefPanel from './pages/ChefPanel'
+import ChefPanel from './panels/ChefPanel'
+import WaiterPanel from './panels/WaiterPanel'
 
 import { Routes, Route, useLocation } from 'react-router-dom'
 
@@ -20,7 +21,8 @@ const App = () => {
   const hideSidebar =
   location.pathname === "/" ||
   location.pathname === "/login" ||
-  location.pathname.startsWith("/chef-panel")
+  location.pathname.startsWith("/chef-panel") ||
+  location.pathname.startsWith("/waiter-panel")
 
   return (
 
@@ -51,6 +53,8 @@ const App = () => {
           <Route path="/customer-menu/*" element={<CustomerMenu />} />
 
           <Route path="/chef-panel/*" element={<ChefPanel />} />
+          
+          <Route path="/waiter-panel/*" element={<WaiterPanel />} />
 
         </Routes>
 

@@ -1,4 +1,4 @@
-import KitchenPanel from "../components/KitchenPanel"
+import KitchenPanel from '../chef-components/KitchenPanel'
 
 function ChefPanel() {
 
