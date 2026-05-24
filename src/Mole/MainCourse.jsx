@@ -1,66 +1,66 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from "axios";
 
 const MainCourse = () => {
 
-  const [vegMainCourse, setVegMainCourse] = useState([
-    { image: "/maincourse/pannerbm.jpeg", name: "Paneer Butter Masala", price: "₹690", available: true },
-    { image: "/maincourse/kadaipanner.jpeg", name: "Kadai Paneer", price: "₹720", available: true },
-    { image: "/maincourse/shahipaneer.jpeg", name: "Shahi Paneer", price: "₹760", available: true },
-    { image: "/maincourse/malaikofte.jpeg", name: "Malai Kofta", price: "₹740", available: true },
-    { image: "/maincourse/kolhapuri.jpeg", name: "Veg Kolhapuri", price: "₹650", available: true },
-    { image: "/maincourse/mixveg.jpeg", name: "Mix Veg Curry", price: "₹620", available: true },
-    { image: "/maincourse/dalmakhni.jpeg", name: "Dal Makhani", price: "₹590", available: true },
-    { image: "/maincourse/daltadka.jpeg", name: "Dal Tadka", price: "₹520", available: true },
-    { image: "/maincourse/palakpanner.jpeg", name: "Palak Paneer", price: "₹710", available: true },
-    { image: "/maincourse/kadaipanner.jpeg", name: "Paneer Lababdar", price: "₹780", available: true },
-    { image: "/maincourse/veghandi.jpeg", name: "Veg Handi", price: "₹680", available: true },
-    { image: "/maincourse/mushroom.jpeg", name: "Mushroom Masala", price: "₹760", available: true },
-    { image: "/maincourse/korma.jpeg", name: "Navratan Korma", price: "₹820", available: true },
-    { image: "/maincourse/biryaniveg.jpeg", name: "Hyderabadi Veg Biryani", price: "₹720", available: true },
-    { image: "/maincourse/dumbiryani.jpeg", name: "Dum Veg Biryani", price: "₹760", available: true },
-  ]);
+  const [vegMainCourse, setVegMainCourse] = useState([]);
+  const [nonVegMainCourse, setNonVegMainCourse] = useState([]);
 
-  const [nonVegMainCourse, setNonVegMainCourse] = useState([
-    { image: "/maincourse/butterchicken.jpeg", name: "Butter Chicken", price: "₹980", available: true },
-    { image: "/maincourse/chickentikkamasala.jpeg", name: "Chicken Tikka Masala", price: "₹1050", available: true },
-    { image: "/maincourse/kadaichicken.jpeg", name: "Kadai Chicken", price: "₹920", available: true },
-    { image: "/maincourse/chickencurry.jpeg", name: "Chicken Curry", price: "₹880", available: true },
-    { image: "/maincourse/muglaichicken.jpeg", name: "Mughlai Chicken", price: "₹1120", available: true },
-    { image: "/maincourse/muttonroganjosh.jpeg", name: "Mutton Rogan Josh", price: "₹1480", available: true },
-    { image: "/maincourse/muttonmasala.jpeg", name: "Mutton Masala", price: "₹1420", available: true },
-    { image: "/maincourse/keema.jpeg", name: "Keema Curry", price: "₹1250", available: true },
-    { image: "/maincourse/fishcurry.jpeg", name: "Fish Curry", price: "₹1320", available: true },
-    { image: "/maincourse/fish.jpeg", name: "Butter Garlic Fish", price: "₹1480", available: true },
-    { image: "/maincourse/prawnmasala.jpeg", name: "Prawn Masala", price: "₹1650", available: true },
-    { image: "/maincourse/prawn.jpeg", name: "Garlic Butter Prawns", price: "₹1820", available: true },
-    { image: "/maincourse/chickenbiryani.jpeg", name: "Chicken Biryani", price: "₹920", available: true },
-    { image: "/maincourse/muttonbiryani.jpeg", name: "Hyderabadi Mutton Biryani", price: "₹1520", available: true },
-    { image: "/maincourse/prawnbiryani.jpeg", name: "Prawn Biryani", price: "₹1780", available: true },
-  ]);
+  useEffect(() => {
+    fetchMainCourseMenu();
+  }, []);
 
-  const toggleVegAvailability = (index) => {
+  const fetchMainCourseMenu = async () => {
 
-    const updatedVeg = [...vegMainCourse];
+    try {
 
-    updatedVeg[index].available =
-      !updatedVeg[index].available;
+      const { data } = await axios.get(
+        "http://localhost:5000/api/menu"
+      );
 
-    setVegMainCourse(updatedVeg);
+      const vegItems = data.filter(
+        (item) =>
+          item.category === "MainCourse" &&
+          item.type === "Veg"
+      );
+
+      const nonVegItems = data.filter(
+        (item) =>
+          item.category === "MainCourse" &&
+          item.type === "NonVeg"
+      );
+
+      setVegMainCourse(vegItems);
+
+      setNonVegMainCourse(nonVegItems);
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
 
   };
 
-  const toggleNonVegAvailability = (index) => {
+  const toggleAvailability = async (id) => {
 
-    const updatedNonVeg = [...nonVegMainCourse];
+    try {
 
-    updatedNonVeg[index].available =
-      !updatedNonVeg[index].available;
+      await axios.patch(
+        `http://localhost:5000/api/menu/${id}`
+      );
 
-    setNonVegMainCourse(updatedNonVeg);
+      fetchMainCourseMenu();
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
 
   };
 
-  const CardGrid = ({ items, toggleAvailability }) => (
+  const CardGrid = ({ items }) => (
 
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-6">
 
@@ -86,18 +86,18 @@ const MainCourse = () => {
               </h2>
 
               <h4 className="text-[#B8860B] font-bold mt-1 text-sm sm:text-lg">
-                {item.price}
+                ₹{item.price}
               </h4>
 
             </div>
 
             <button
-              onClick={() => toggleAvailability(index)}
+              onClick={() => toggleAvailability(item._id)}
               className={`
                 relative w-14 h-8 rounded-full transition duration-300 flex-shrink-0
 
                 ${
-                  item.available
+                  item.isAvailable
                     ? "bg-green-500"
                     : "bg-gray-300"
                 }
@@ -109,7 +109,7 @@ const MainCourse = () => {
                   absolute top-1 w-6 h-6 bg-white rounded-full transition duration-300
 
                   ${
-                    item.available
+                    item.isAvailable
                       ? "right-1"
                       : "left-1"
                   }
@@ -150,10 +150,7 @@ const MainCourse = () => {
 
         </div>
 
-        <CardGrid
-          items={vegMainCourse}
-          toggleAvailability={toggleVegAvailability}
-        />
+        <CardGrid items={vegMainCourse} />
 
       </div>
 
@@ -175,10 +172,7 @@ const MainCourse = () => {
 
         </div>
 
-        <CardGrid
-          items={nonVegMainCourse}
-          toggleAvailability={toggleNonVegAvailability}
-        />
+        <CardGrid items={nonVegMainCourse} />
 
       </div>
 

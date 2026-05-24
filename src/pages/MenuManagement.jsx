@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   NavLink,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
+
+import axios from "axios";
 
 import { Plus } from "lucide-react";
 
@@ -16,7 +18,21 @@ import MainCourse from "../Mole/MainCourse";
 
 const MenuManagement = () => {
 
+  const [showForm, setShowForm] = useState(false);
+
+  const [formData, setFormData] = useState({
+
+    name: "",
+    price: "",
+    category: "",
+    type: "",
+    image: "",
+    isAvailable: true,
+
+  });
+
   const navItems = [
+
     {
       name: "Drinks",
       path: "/menu/drinks",
@@ -41,10 +57,44 @@ const MenuManagement = () => {
       name: "Desserts",
       path: "/menu/desserts",
     },
+
   ];
 
+  const handleAddItem = async () => {
+
+    try {
+
+      await axios.post(
+        "http://localhost:5000/api/menu",
+        formData
+      );
+
+      alert("Item Added Successfully");
+
+      setFormData({
+
+        name: "",
+        price: "",
+        category: "",
+        type: "",
+        image: "",
+        isAvailable: true,
+
+      });
+
+      setShowForm(false);
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
+
   return (
-    <div className="w-full min-h-screen  p-4 sm:p-6">
+
+    <div className="w-full min-h-screen p-4 sm:p-6">
 
       {/* TOP SECTION */}
 
@@ -69,6 +119,9 @@ const MenuManagement = () => {
           {/* ADD ITEM BUTTON */}
 
           <button
+
+            onClick={() => setShowForm(!showForm)}
+
             className="
               flex items-center gap-2
               bg-[#B8860B]
@@ -94,7 +147,7 @@ const MenuManagement = () => {
 
         {/* CATEGORY BUTTONS */}
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 mb-6">
 
           {navItems.map((item, index) => (
 
@@ -119,6 +172,147 @@ const MenuManagement = () => {
           ))}
 
         </div>
+
+        {/* ADD ITEM FORM */}
+
+        {
+          showForm && (
+
+            <div className="bg-[#fffaf4] p-6 rounded-3xl border border-[#D4A017]/20">
+
+              <h2 className="text-2xl font-bold text-[#B8860B] mb-6">
+                Add New Menu Item
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                {/* NAME */}
+
+                <input
+                  type="text"
+                  placeholder="Item Name"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      name: e.target.value,
+                    })
+                  }
+                  className="p-3 rounded-xl border border-gray-300 outline-none"
+                />
+
+                {/* PRICE */}
+
+                <input
+                  type="number"
+                  placeholder="Price"
+                  value={formData.price}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      price: e.target.value,
+                    })
+                  }
+                  className="p-3 rounded-xl border border-gray-300 outline-none"
+                />
+
+                {/* CATEGORY */}
+
+                <select
+                  value={formData.category}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      category: e.target.value,
+                    })
+                  }
+                  className="p-3 rounded-xl border border-gray-300 outline-none"
+                >
+
+                  <option value="">
+                    Select Category
+                  </option>
+
+                  <option value="Drinks">
+                    Drinks
+                  </option>
+
+                  <option value="Starter">
+                    Starter
+                  </option>
+
+                  <option value="Main Course">
+                    Main Course
+                  </option>
+
+                  <option value="Bread">
+                    Bread
+                  </option>
+
+                  <option value="Dessert">
+                    Dessert
+                  </option>
+
+                </select>
+
+                {/* TYPE */}
+
+                <input
+                  type="text"
+                  placeholder="Type"
+                  value={formData.type}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      type: e.target.value,
+                    })
+                  }
+                  className="p-3 rounded-xl border border-gray-300 outline-none"
+                />
+
+                {/* IMAGE */}
+
+                <input
+                  type="text"
+                  placeholder="/drinks/example.jpeg"
+                  value={formData.image}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      image: e.target.value,
+                    })
+                  }
+                  className="p-3 rounded-xl border border-gray-300 outline-none md:col-span-2"
+                />
+
+              </div>
+
+              {/* SAVE BUTTON */}
+
+              <button
+
+                onClick={handleAddItem}
+
+                className="
+                  mt-6
+                  bg-[#B8860B]
+                  text-white
+                  px-6 py-3
+                  rounded-2xl
+                  font-semibold
+                  hover:bg-[#9A7209]
+                  transition-all duration-300
+                "
+              >
+
+                Save Item
+
+              </button>
+
+            </div>
+
+          )
+        }
 
       </div>
 
@@ -175,6 +369,7 @@ const MenuManagement = () => {
       </div>
 
     </div>
+
   );
 };
 

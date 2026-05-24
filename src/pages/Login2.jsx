@@ -168,7 +168,7 @@ const handleLogin = (e) => {
               >
                 <option value="">Select Role</option>
                 <option value="Admin">Admin</option>
-                <option value="Manager">Manager</option>
+                
                 <option value="Chef">Chef</option>
                 <option value="Waiter">Waiter</option>
               </select>
