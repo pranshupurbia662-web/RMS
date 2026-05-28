@@ -1,90 +1,50 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import {
   IceCreamBowl,
   Plus,
-} from "lucide-react"
-
-
-
-/* IMAGES */
-
-import gulabJamunCheesecake from "../../waiter-assets/food/desserts/gulabjamun.jpeg"
-import rasmalaiTresLeches from "../../waiter-assets/food/desserts/rasmalai.jpeg"
-import brownieBelgianIceCream from "../../waiter-assets/food/desserts/brownie.jpeg"
-import chocolateLavaCake from "../../waiter-assets/food/desserts/lavacake.jpeg"
-import newYorkCheesecake from "../../waiter-assets/food/desserts/newchessecake.jpeg"
-import classicTiramisu from "../../waiter-assets/food/desserts/tiramisu.jpeg"
-import kulfiFaloodaRoyale from "../../waiter-assets/food/desserts/faluda.jpeg"
-import belgianWaffleSupreme from "../../waiter-assets/food/desserts/waffle.jpeg"
-import royalIceCreamSundae from "../../waiter-assets/food/desserts/royalsundae.jpeg"
-import rabdiDryFruits from "../../waiter-assets/food/desserts/rabdi.jpeg"
+} from "lucide-react";
 
 function Desserts() {
 
-  const desserts = [
+  const [desserts, setDesserts] = useState([]);
 
-    {
-      name: "Gulab Jamun Cheesecake",
-      price: "₹420",
-      image: gulabJamunCheesecake,
-    },
+  useEffect(() => {
 
-    {
-      name: "Rasmalai Tres Leches",
-      price: "₹520",
-      image: rasmalaiTresLeches,
-    },
+    fetchDesserts();
 
-    {
-      name: "Brownie with Belgian Ice Cream",
-      price: "₹640",
-      image: brownieBelgianIceCream,
-    },
+  }, []);
 
-    {
-      name: "Chocolate Lava Cake",
-      price: "₹690",
-      image: chocolateLavaCake,
-    },
+  const fetchDesserts = async () => {
 
-    {
-      name: "New York Cheesecake",
-      price: "₹760",
-      image: newYorkCheesecake,
-    },
+    try {
 
-    {
-      name: "Classic Tiramisu",
-      price: "₹820",
-      image: classicTiramisu,
-    },
+      const response = await axios.get(
+        "http://localhost:5000/api/menu"
+      );
 
-    {
-      name: "Kulfi Falooda Royale",
-      price: "₹620",
-      image: kulfiFaloodaRoyale,
-    },
+      const dessertItems = response.data.filter(
+        (item) =>
+          item.category?.trim().toLowerCase() === "dessert" &&
+          item.isAvailable === true
+      );
 
-    {
-      name: "Belgian Waffle Supreme",
-      price: "₹880",
-      image: belgianWaffleSupreme,
-    },
+      setDesserts(dessertItems);
 
-    {
-      name: "Royal Ice Cream Sundae",
-      price: "₹740",
-      image: royalIceCreamSundae,
-    },
+    } catch (error) {
 
-    {
-      name: "Rabdi with Dry Fruits",
-      price: "₹480",
-      image: rabdiDryFruits,
-    },
+      console.log(error);
 
-  ]
+    }
 
+  };
 
+  const addToOrder = (item) => {
+
+    console.log("Added:", item);
+
+  };
 
   return (
 
@@ -107,8 +67,6 @@ function Desserts() {
 
       </div>
 
-
-
       {/* GRID */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -119,19 +77,15 @@ function Desserts() {
             key={index}
 
             className="
-
-            bg-[#fffaf0]
-            rounded-3xl
-            overflow-hidden
-            border
-            border-gray-200
-
-            hover:shadow-2xl
-            transition-all
-            duration-300
-
+              bg-[#fffaf0]
+              rounded-3xl
+              overflow-hidden
+              border
+              border-gray-200
+              hover:shadow-2xl
+              transition-all
+              duration-300
             "
-
           >
 
             {/* IMAGE */}
@@ -141,13 +95,11 @@ function Desserts() {
               alt={item.name}
 
               className="
-              h-52
-              w-full
-              object-cover
+                h-52
+                w-full
+                object-cover
               "
             />
-
-
 
             {/* CONTENT */}
 
@@ -159,33 +111,26 @@ function Desserts() {
 
               </h3>
 
-
-
               <div className="flex items-center justify-between">
 
                 <p className="text-[#D4A017] text-lg font-bold">
 
-                  {item.price}
+                  ₹{item.price}
 
                 </p>
-
-
 
                 <button
 
                   className="
-
-                  bg-[#D4A017]
-                  hover:bg-yellow-700
-
-                  text-white
-
-                  p-3
-                  rounded-full
-
-                  transition-all
-
+                    bg-[#D4A017]
+                    hover:bg-yellow-700
+                    text-white
+                    p-3
+                    rounded-full
+                    transition-all
                   "
+
+                  onClick={() => addToOrder(item)}
 
                 >
 
@@ -205,8 +150,8 @@ function Desserts() {
 
     </div>
 
-  )
+  );
 
 }
 
-export default Desserts
+export default Desserts;

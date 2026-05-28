@@ -1,97 +1,55 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import {
   Leaf,
   Plus,
-} from "lucide-react"
-
-
-
-/* IMAGES */
-
-import paneerTikka from "../../waiter-assets/food/veg-starters/pannertikka.jpeg"
-import haraBharaKebab from "../../waiter-assets/food/veg-starters/harakabab.jpeg"
-import crispyCorn from "../../waiter-assets/food/veg-starters/crispycorn.jpeg"
-import vegSpringRolls from "../../waiter-assets/food/veg-starters/springroll.jpeg"
-import chilliMushroom from "../../waiter-assets/food/veg-starters/mushroom.jpeg"
-import cheeseBalls from "../../waiter-assets/food/veg-starters/cheeseballs.jpeg"
-import tandooriBroccoli from "../../waiter-assets/food/veg-starters/brocoli.jpeg"
-import honeyChilliPotato from "../../waiter-assets/food/veg-starters/honeypatato.jpeg"
-import vegManchurianDry from "../../waiter-assets/food/veg-starters/manchurian.jpeg"
-import stuffedGarlicBread from "../../waiter-assets/food/veg-starters/garlicbread.jpeg"
-
+} from "lucide-react";
 
 function VegStarters() {
 
-  const vegStarters = [
+  const [vegStarters, setVegStarters] = useState([]);
 
-    {
-      name: "Paneer Tikka",
-      price: "₹760",
-      image: paneerTikka,
-    },
+  useEffect(() => {
 
-    {
-      name: "Hara Bhara Kebab",
-      price: "₹680",
-      image: haraBharaKebab,
-    },
+    fetchVegStarters();
 
-    {
-      name: "Crispy Corn",
-      price: "₹620",
-      image: crispyCorn,
-    },
+  }, []);
 
-    {
-      name: "Veg Spring Rolls",
-      price: "₹640",
-      image: vegSpringRolls,
-    },
+  const fetchVegStarters = async () => {
 
-    {
-      name: "Chilli Mushroom",
-      price: "₹720",
-      image: chilliMushroom,
-    },
+    try {
 
-    {
-      name: "Cheese Balls",
-      price: "₹760",
-      image: cheeseBalls,
-    },
+      const response = await axios.get(
+        "http://localhost:5000/api/menu"
+      );
 
-    {
-      name: "Tandoori Broccoli",
-      price: "₹820",
-      image: tandooriBroccoli,
-    },
+      const starterItems = response.data.filter(
+        (item) =>
+          item.category?.trim().toLowerCase() === "starter" &&
+          item.type?.trim().toLowerCase() === "veg" &&
+          item.isAvailable === true
+      );
 
-    {
-      name: "Honey Chilli Potato",
-      price: "₹660",
-      image: honeyChilliPotato,
-    },
+      setVegStarters(starterItems);
 
-    {
-      name: "Veg Manchurian Dry",
-      price: "₹720",
-      image: vegManchurianDry,
-    },
+    } catch (error) {
 
-    {
-      name: "Stuffed Garlic Bread",
-      price: "₹580",
-      image: stuffedGarlicBread,
-    },
+      console.log(error);
 
-  ]
+    }
 
+  };
 
+  const addToOrder = (item) => {
+
+    console.log("Added:", item);
+
+  };
 
   return (
 
     <div className="bg-white p-6 rounded-3xl border border-gray-200 mt-10">
-
-      {/* HEADING */}
 
       <div className="flex items-center gap-3 mb-8">
 
@@ -108,10 +66,6 @@ function VegStarters() {
 
       </div>
 
-
-
-      {/* GRID */}
-
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
         {vegStarters.map((item, index) => (
@@ -120,37 +74,22 @@ function VegStarters() {
             key={index}
 
             className="
-
-            bg-[#fffaf0]
-            rounded-3xl
-            overflow-hidden
-            border
-            border-gray-200
-
-            hover:shadow-2xl
-            transition-all
-            duration-300
-
+              bg-[#fffaf0]
+              rounded-3xl
+              overflow-hidden
+              border
+              border-gray-200
+              hover:shadow-2xl
+              transition-all
+              duration-300
             "
-
           >
-
-            {/* IMAGE */}
 
             <img
               src={item.image}
               alt={item.name}
-
-              className="
-              h-52
-              w-full
-              object-cover
-              "
+              className="h-52 w-full object-cover"
             />
-
-
-
-            {/* CONTENT */}
 
             <div className="p-5">
 
@@ -160,34 +99,24 @@ function VegStarters() {
 
               </h3>
 
-
-
               <div className="flex items-center justify-between">
 
                 <p className="text-[#D4A017] text-lg font-bold">
 
-                  {item.price}
+                  ₹{item.price}
 
                 </p>
 
-
-
                 <button
-
                   className="
-
-                  bg-[#D4A017]
-                  hover:bg-yellow-700
-
-                  text-white
-
-                  p-3
-                  rounded-full
-
-                  transition-all
-
+                    bg-[#D4A017]
+                    hover:bg-yellow-700
+                    text-white
+                    p-3
+                    rounded-full
+                    transition-all
                   "
-
+                  onClick={() => addToOrder(item)}
                 >
 
                   <Plus size={18} />
@@ -206,8 +135,8 @@ function VegStarters() {
 
     </div>
 
-  )
+  );
 
 }
 
-export default VegStarters
+export default VegStarters;

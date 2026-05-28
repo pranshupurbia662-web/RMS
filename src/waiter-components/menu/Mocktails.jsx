@@ -1,128 +1,58 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import {
   GlassWater,
   Plus,
-} from "lucide-react"
-
-
-import virginMojito from "../../waiter-assets/food/mocktails/virginmoito.jpeg"
-import strawberryMojito from "../../waiter-assets/food/mocktails/strawberry.jpeg"
-import blueLagoon from "../../waiter-assets/food/mocktails/bluelagoon.jpeg"
-import watermelonCooler from "../../waiter-assets/food/mocktails/watermeloncooler.jpeg"
-import mintLemonade from "../../waiter-assets/food/mocktails/mintlemon.jpeg"
-import pineapplePunch from "../../waiter-assets/food/mocktails/pineapplepunch.jpeg"
-import kiwiBlast from "../../waiter-assets/food/mocktails/kiwiblast.jpeg"
-import cranberrySparkler from "../../waiter-assets/food/mocktails/cranberry.jpeg"
-import greenAppleSoda from "../../waiter-assets/food/mocktails/greenapple.jpeg"
-import mangoMintFizz from "../../waiter-assets/food/mocktails/mangofizz.jpeg"
-import icedPeachTea from "../../waiter-assets/food/mocktails/icedtea.jpeg"
-import coldCoffeeFrappe from "../../waiter-assets/food/mocktails/coldcoffee.jpeg"
-import oreoShake from "../../waiter-assets/food/mocktails/oreoshake.jpeg"
-import vanillaCaramelFrappe from "../../waiter-assets/food/mocktails/vanila.jpeg"
-import chocolateShakeSupreme from "../../waiter-assets/food/mocktails/chocolateshake.jpeg"
+} from "lucide-react";
 
 function Mocktails() {
 
-  const mocktails = [
+  const [mocktails, setMocktails] = useState([]);
 
-    {
-      name: "Virgin Mojito",
-      price: "₹420",
-      image: virginMojito,
-    },
+  useEffect(() => {
 
-    {
-      name: "Strawberry Mojito",
-      price: "₹480",
-      image: strawberryMojito,
-    },
+    fetchMocktails();
 
-    {
-      name: "Blue Lagoon",
-      price: "₹520",
-      image: blueLagoon,
-    },
+  }, []);
 
-    {
-      name: "Watermelon Cooler",
-      price: "₹460",
-      image: watermelonCooler,
-    },
+  const fetchMocktails = async () => {
 
-    {
-      name: "Mint Lemonade",
-      price: "₹390",
-      image: mintLemonade,
-    },
+    try {
 
-    {
-      name: "Pineapple Punch",
-      price: "₹540",
-      image: pineapplePunch,
-    },
+      const response = await axios.get(
+        "http://localhost:5000/api/menu"
+      );
 
-    {
-      name: "Kiwi Blast",
-      price: "₹580",
-      image: kiwiBlast,
-    },
+      const mocktailItems = response.data.filter(
+        (item) =>
+          item.category?.trim().toLowerCase() === "drinks" &&
+          item.type?.trim().toLowerCase() === "mocktail" &&
+          item.isAvailable === true
+      );
 
-    {
-      name: "Cranberry Sparkler",
-      price: "₹620",
-      image: cranberrySparkler,
-    },
+      setMocktails(mocktailItems);
 
-    {
-      name: "Green Apple Soda",
-      price: "₹440",
-      image: greenAppleSoda,
-    },
+    } catch (error) {
 
-    {
-      name: "Mango Mint Fizz",
-      price: "₹520",
-      image: mangoMintFizz,
-    },
+      console.log(error);
 
-    {
-      name: "Iced Peach Tea",
-      price: "₹480",
-      image: icedPeachTea,
-    },
+    }
 
-    {
-      name: "Cold Coffee Frappe",
-      price: "₹520",
-      image: coldCoffeeFrappe,
-    },
+  };
 
-    {
-      name: "Oreo Shake",
-      price: "₹560",
-      image: oreoShake,
-    },
+  const addToOrder = (item) => {
 
-    {
-      name: "Vanilla Caramel Frappe",
-      price: "₹620",
-      image: vanillaCaramelFrappe,
-    },
+    console.log("Added:", item);
 
-    {
-      name: "Chocolate Shake Supreme",
-      price: "₹640",
-      image: chocolateShakeSupreme,
-    },
+  };
 
-  ]
-
-
-return (
+  return (
 
     <div className="bg-white p-6 rounded-3xl border border-gray-200">
 
       {/* HEADING */}
+
       <div className="flex items-center gap-3 mb-8">
 
         <GlassWater
@@ -131,46 +61,73 @@ return (
         />
 
         <h2 className="text-3xl font-bold text-gray-800">
+
           Signature Mocktails
+
         </h2>
 
       </div>
 
-
-
       {/* GRID */}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
         {mocktails.map((item, index) => (
 
           <div
             key={index}
-            className="bg-[#fffaf0] rounded-3xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300"
+
+            className="
+              bg-[#fffaf0]
+              rounded-3xl
+              overflow-hidden
+              border
+              border-gray-200
+              hover:shadow-2xl
+              transition-all
+              duration-300
+            "
           >
 
             {/* IMAGE */}
+
             <img
               src={item.image}
               alt={item.name}
               className="h-52 w-full object-cover"
             />
 
-
             {/* CONTENT */}
+
             <div className="p-5">
 
               <h3 className="text-xl font-bold text-gray-800 mb-2">
+
                 {item.name}
+
               </h3>
 
               <div className="flex items-center justify-between">
 
                 <p className="text-[#D4A017] text-lg font-bold">
-                  {item.price}
+
+                  ₹{item.price}
+
                 </p>
 
                 <button
-                  className="bg-[#D4A017] hover:bg-yellow-700 text-white p-3 rounded-full transition-all"
+
+                  className="
+                    bg-[#D4A017]
+                    hover:bg-yellow-700
+                    text-white
+                    p-3
+                    rounded-full
+                    transition-all
+                  "
+
+                  onClick={() => addToOrder(item)}
+
                 >
 
                   <Plus size={18} />
@@ -189,8 +146,8 @@ return (
 
     </div>
 
-  )
+  );
 
 }
 
-export default Mocktails
+export default Mocktails;

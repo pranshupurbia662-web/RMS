@@ -1,77 +1,44 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import {
   Wheat,
   Plus,
-} from "lucide-react"
-
-
-
-/* IMAGES */
-
-import butterNaan from "../../waiter-assets/food/breads/butternaan.jpeg"
-import garlicNaan from "../../waiter-assets/food/breads/garlicnaan.jpeg"
-import cheeseNaan from "../../waiter-assets/food/breads/cheese.jpeg"
-import tandooriRoti from "../../waiter-assets/food/breads/tandoori.jpeg"
-import butterRoti from "../../waiter-assets/food/breads/butterroti.jpeg"
-import lachhaParatha from "../../waiter-assets/food/breads/lacha.jpeg"
-import stuffedKulcha from "../../waiter-assets/food/breads/stuffedkulcha.jpeg"
-import missiRoti from "../../waiter-assets/food/breads/misi.jpeg"
-
+} from "lucide-react";
 
 function Breads() {
 
-  const breads = [
+  const [breads, setBreads] = useState([]);
 
-    {
-      name: "Butter Naan",
-      price: "₹180",
-      image: butterNaan,
-    },
+  useEffect(() => {
 
-    {
-      name: "Garlic Naan",
-      price: "₹240",
-      image: garlicNaan,
-    },
+    fetchBreads();
 
-    {
-      name: "Cheese Naan",
-      price: "₹320",
-      image: cheeseNaan,
-    },
+  }, []);
 
-    {
-      name: "Tandoori Roti",
-      price: "₹140",
-      image: tandooriRoti,
-    },
+  const fetchBreads = async () => {
 
-    {
-      name: "Butter Roti",
-      price: "₹160",
-      image: butterRoti,
-    },
+    try {
 
-    {
-      name: "Lachha Paratha",
-      price: "₹260",
-      image: lachhaParatha,
-    },
+      const response = await axios.get(
+        "http://localhost:5000/api/menu"
+      );
 
-    {
-      name: "Stuffed Kulcha",
-      price: "₹340",
-      image: stuffedKulcha,
-    },
+      const breadItems = response.data.filter(
+        (item) =>
+          item.category?.trim().toLowerCase() === "bread" &&
+          item.isAvailable === true
+      );
 
-    {
-      name: "Missi Roti",
-      price: "₹220",
-      image: missiRoti,
-    },
+      setBreads(breadItems);
 
-  ]
+    } catch (error) {
 
+      console.log(error);
 
+    }
+
+  };
 
   return (
 
@@ -94,8 +61,6 @@ function Breads() {
 
       </div>
 
-
-
       {/* GRID */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -106,19 +71,15 @@ function Breads() {
             key={index}
 
             className="
-
-            bg-[#fffaf0]
-            rounded-3xl
-            overflow-hidden
-            border
-            border-gray-200
-
-            hover:shadow-2xl
-            transition-all
-            duration-300
-
+              bg-[#fffaf0]
+              rounded-3xl
+              overflow-hidden
+              border
+              border-gray-200
+              hover:shadow-2xl
+              transition-all
+              duration-300
             "
-
           >
 
             {/* IMAGE */}
@@ -128,13 +89,11 @@ function Breads() {
               alt={item.name}
 
               className="
-              h-52
-              w-full
-              object-cover
+                h-52
+                w-full
+                object-cover
               "
             />
-
-
 
             {/* CONTENT */}
 
@@ -146,33 +105,26 @@ function Breads() {
 
               </h3>
 
-
-
               <div className="flex items-center justify-between">
 
                 <p className="text-[#D4A017] text-lg font-bold">
 
-                  {item.price}
+                  ₹{item.price}
 
                 </p>
-
-
 
                 <button
 
                   className="
-
-                  bg-[#D4A017]
-                  hover:bg-yellow-700
-
-                  text-white
-
-                  p-3
-                  rounded-full
-
-                  transition-all
-
+                    bg-[#D4A017]
+                    hover:bg-yellow-700
+                    text-white
+                    p-3
+                    rounded-full
+                    transition-all
                   "
+
+                  onClick={() => addToOrder(item)}
 
                 >
 
@@ -192,8 +144,8 @@ function Breads() {
 
     </div>
 
-  )
+  );
 
 }
 
-export default Breads
+export default Breads;

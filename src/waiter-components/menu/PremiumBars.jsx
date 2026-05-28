@@ -1,92 +1,57 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import {
   Wine,
   Plus,
-} from "lucide-react"
-
-
-import classicMojito from "../../waiter-assets/food/premiumbars/classicmojito.jpeg"
-import margarita from "../../waiter-assets/food/premiumbars/margrita.jpeg"
-import cosmopolitan from "../../waiter-assets/food/premiumbars/cosmopolita.jpeg"
-import whiskeySour from "../../waiter-assets/food/premiumbars/sourwhis.jpeg"
-import oldFashioned from "../../waiter-assets/food/premiumbars/oldfashion.jpeg"
-import longIslandIcedTea from "../../waiter-assets/food/premiumbars/long.jpeg"
-import bloodyMary from "../../waiter-assets/food/premiumbars/blodymary.jpeg"
-import martini from "../../waiter-assets/food/premiumbars/martini.jpeg"
-import tequilaSunrise from "../../waiter-assets/food/premiumbars/tequila.jpeg"
-import pinaColada from "../../waiter-assets/food/premiumbars/pinacaloda.jpeg"
-
+} from "lucide-react";
 
 function PremiumBars() {
 
-  const premiumBars = [
+  const [premiumBars, setPremiumBars] = useState([]);
 
-    {
-      name: "Classic Mojito",
-      price: "₹780",
-      image: classicMojito,
-    },
+  useEffect(() => {
 
-    {
-      name: "Margarita",
-      price: "₹920",
-      image: margarita,
-    },
+    fetchPremiumBars();
 
-    {
-      name: "Cosmopolitan",
-      price: "₹980",
-      image: cosmopolitan,
-    },
+  }, []);
 
-    {
-      name: "Whiskey Sour",
-      price: "₹1050",
-      image: whiskeySour,
-    },
+  const fetchPremiumBars = async () => {
 
-    {
-      name: "Old Fashioned",
-      price: "₹1180",
-      image: oldFashioned,
-    },
+    try {
 
-    {
-      name: "Long Island Iced Tea",
-      price: "₹1320",
-      image: longIslandIcedTea,
-    },
+      const response = await axios.get(
+        "http://localhost:5000/api/menu"
+      );
 
-    {
-      name: "Bloody Mary",
-      price: "₹960",
-      image: bloodyMary,
-    },
+      const cocktailItems = response.data.filter(
+        (item) =>
+          item.category?.trim().toLowerCase() === "drinks" &&
+          item.type?.trim().toLowerCase() === "cocktail" &&
+          item.isAvailable === true
+      );
 
-    {
-      name: "Martini",
-      price: "₹1240",
-      image: martini,
-    },
+      setPremiumBars(cocktailItems);
 
-    {
-      name: "Pina Colada",
-      price: "₹920",
-      image: pinaColada,
-    },
+    } catch (error) {
 
-    {
-      name: "Tequila Sunrise",
-      price: "₹980",
-      image: tequilaSunrise,
-    },
+      console.log(error);
 
-  ]
+    }
 
+  };
 
+  const addToOrder = (item) => {
+
+    console.log("Added:", item);
+
+  };
 
   return (
 
     <div className="bg-white p-6 rounded-3xl border border-gray-200 mt-10">
+
+      {/* HEADING */}
 
       <div className="flex items-center gap-3 mb-8">
 
@@ -103,6 +68,8 @@ function PremiumBars() {
 
       </div>
 
+      {/* GRID */}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
         {premiumBars.map((item, index) => (
@@ -111,32 +78,26 @@ function PremiumBars() {
             key={index}
 
             className="
-
-            bg-[#fffaf0]
-            rounded-3xl
-            overflow-hidden
-            border
-            border-gray-200
-
-            hover:shadow-2xl
-            transition-all
-            duration-300
-
+              bg-[#fffaf0]
+              rounded-3xl
+              overflow-hidden
+              border
+              border-gray-200
+              hover:shadow-2xl
+              transition-all
+              duration-300
             "
-
           >
+
+            {/* IMAGE */}
 
             <img
               src={item.image}
               alt={item.name}
-
-              className="
-              h-52
-              w-full
-              object-cover
-              "
+              className="h-52 w-full object-cover"
             />
 
+            {/* CONTENT */}
 
             <div className="p-5">
 
@@ -146,33 +107,26 @@ function PremiumBars() {
 
               </h3>
 
-
-
               <div className="flex items-center justify-between">
 
                 <p className="text-[#D4A017] text-lg font-bold">
 
-                  {item.price}
+                  ₹{item.price}
 
                 </p>
-
-
 
                 <button
 
                   className="
-
-                  bg-[#D4A017]
-                  hover:bg-yellow-700
-
-                  text-white
-
-                  p-3
-                  rounded-full
-
-                  transition-all
-
+                    bg-[#D4A017]
+                    hover:bg-yellow-700
+                    text-white
+                    p-3
+                    rounded-full
+                    transition-all
                   "
+
+                  onClick={() => addToOrder(item)}
 
                 >
 
@@ -192,8 +146,8 @@ function PremiumBars() {
 
     </div>
 
-  )
+  );
 
 }
 
-export default PremiumBars
+export default PremiumBars;

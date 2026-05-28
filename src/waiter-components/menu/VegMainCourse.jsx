@@ -1,120 +1,51 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import {
   Salad,
   Plus,
-} from "lucide-react"
-
-
-
-/* IMAGES */
-
-import paneerButterMasala from "../../waiter-assets/food/veg-maincourse/pannerbm.jpeg"
-import kadaiPaneer from "../../waiter-assets/food/veg-maincourse/kadaipanner.jpeg"
-import shahiPaneer from "../../waiter-assets/food/veg-maincourse/shahipaneer.jpeg"
-import malaiKofta from "../../waiter-assets/food/veg-maincourse/malaikofte.jpeg"
-import vegKolhapuri from "../../waiter-assets/food/veg-maincourse/kolhapuri.jpeg"
-import mixVegCurry from "../../waiter-assets/food/veg-maincourse/mixveg.jpeg"
-import dalMakhani from "../../waiter-assets/food/veg-maincourse/dalmakhni.jpeg"
-import dalTadka from "../../waiter-assets/food/veg-maincourse/daltadka.jpeg"
-import palakPaneer from "../../waiter-assets/food/veg-maincourse/palakpanner.jpeg"
-import vegHandi from "../../waiter-assets/food/veg-maincourse/veghandi.jpeg"
-import mushroomMasala from "../../waiter-assets/food/veg-maincourse/mushroom.jpeg"
-import navratanKorma from "../../waiter-assets/food/veg-maincourse/korma.jpeg"
-import hyderabadiVegBiryani from "../../waiter-assets/food/veg-maincourse/biryaniveg.jpeg"
-import dumVegBiryani from "../../waiter-assets/food/veg-maincourse/dumbiryani.jpeg"
-
-
+} from "lucide-react";
 
 function VegMainCourse() {
 
-  const vegMainCourse = [
+  const [vegMainCourse, setVegMainCourse] = useState([]);
 
-    {
-      name: "Paneer Butter Masala",
-      price: "₹690",
-      image: paneerButterMasala,
-    },
+  useEffect(() => {
 
-    {
-      name: "Kadai Paneer",
-      price: "₹720",
-      image: kadaiPaneer,
-    },
+    fetchVegMainCourse();
 
-    {
-      name: "Shahi Paneer",
-      price: "₹760",
-      image: shahiPaneer,
-    },
+  }, []);
 
-    {
-      name: "Malai Kofta",
-      price: "₹740",
-      image: malaiKofta,
-    },
+  const fetchVegMainCourse = async () => {
 
-    {
-      name: "Veg Kolhapuri",
-      price: "₹650",
-      image: vegKolhapuri,
-    },
+    try {
 
-    {
-      name: "Mix Veg Curry",
-      price: "₹620",
-      image: mixVegCurry,
-    },
+      const response = await axios.get(
+        "http://localhost:5000/api/menu"
+      );
 
-    {
-      name: "Dal Makhani",
-      price: "₹590",
-      image: dalMakhani,
-    },
+      const vegItems = response.data.filter(
+        (item) =>
+          item.category?.trim().toLowerCase() === "maincourse" &&
+          item.type?.trim().toLowerCase() === "veg" &&
+          item.isAvailable === true
+      );
 
-    {
-      name: "Dal Tadka",
-      price: "₹520",
-      image: dalTadka,
-    },
+      setVegMainCourse(vegItems);
 
-    {
-      name: "Palak Paneer",
-      price: "₹710",
-      image: palakPaneer,
-    },
+    } catch (error) {
 
-    {
-      name: "Veg Handi",
-      price: "₹680",
-      image: vegHandi,
-    },
+      console.log(error);
 
-    {
-      name: "Mushroom Masala",
-      price: "₹760",
-      image: mushroomMasala,
-    },
+    }
 
-    {
-      name: "Navratan Korma",
-      price: "₹820",
-      image: navratanKorma,
-    },
+  };
 
-    {
-      name: "Hyderabadi Veg Biryani",
-      price: "₹720",
-      image: hyderabadiVegBiryani,
-    },
+  const addToOrder = (item) => {
 
-    {
-      name: "Dum Veg Biryani",
-      price: "₹760",
-      image: dumVegBiryani,
-    },
+    console.log("Added:", item);
 
-  ]
-
-
+  };
 
   return (
 
@@ -137,8 +68,6 @@ function VegMainCourse() {
 
       </div>
 
-
-
       {/* GRID */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -149,37 +78,22 @@ function VegMainCourse() {
             key={index}
 
             className="
-
-            bg-[#fffaf0]
-            rounded-3xl
-            overflow-hidden
-            border
-            border-gray-200
-
-            hover:shadow-2xl
-            transition-all
-            duration-300
-
+              bg-[#fffaf0]
+              rounded-3xl
+              overflow-hidden
+              border
+              border-gray-200
+              hover:shadow-2xl
+              transition-all
+              duration-300
             "
-
           >
-
-            {/* IMAGE */}
 
             <img
               src={item.image}
               alt={item.name}
-
-              className="
-              h-52
-              w-full
-              object-cover
-              "
+              className="h-52 w-full object-cover"
             />
-
-
-
-            {/* CONTENT */}
 
             <div className="p-5">
 
@@ -189,34 +103,24 @@ function VegMainCourse() {
 
               </h3>
 
-
-
               <div className="flex items-center justify-between">
 
                 <p className="text-[#D4A017] text-lg font-bold">
 
-                  {item.price}
+                  ₹{item.price}
 
                 </p>
 
-
-
                 <button
-
                   className="
-
-                  bg-[#D4A017]
-                  hover:bg-yellow-700
-
-                  text-white
-
-                  p-3
-                  rounded-full
-
-                  transition-all
-
+                    bg-[#D4A017]
+                    hover:bg-yellow-700
+                    text-white
+                    p-3
+                    rounded-full
+                    transition-all
                   "
-
+                  onClick={() => addToOrder(item)}
                 >
 
                   <Plus size={18} />
@@ -235,8 +139,8 @@ function VegMainCourse() {
 
     </div>
 
-  )
+  );
 
 }
 
-export default VegMainCourse
+export default VegMainCourse;

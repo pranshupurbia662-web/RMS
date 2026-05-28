@@ -1,92 +1,51 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import {
   Drumstick,
   Plus,
-} from "lucide-react"
-
-
-
-/* IMAGES */
-
-import chickenTikka from "../../waiter-assets/food/nonveg-starters/chickentikka.jpeg"
-import tangdiKebab from "../../waiter-assets/food/nonveg-starters/tangedikebab.jpeg"
-import chickenLollipop from "../../waiter-assets/food/nonveg-starters/lolipop.jpeg"
-import fishFingers from "../../waiter-assets/food/nonveg-starters/fishfinger.jpeg"
-import prawnsTempura from "../../waiter-assets/food/nonveg-starters/prawnstempura.jpeg"
-import muttonSeekhKebab from "../../waiter-assets/food/nonveg-starters/mutton.jpeg"
-import butterGarlicPrawns from "../../waiter-assets/food/nonveg-starters/butterprown.jpeg"
-import tandooriChicken from "../../waiter-assets/food/nonveg-starters/tandoorichicken.jpeg"
-import crispyChickenWings from "../../waiter-assets/food/nonveg-starters/chickenwings.jpeg"
-import chilliChicken from "../../waiter-assets/food/nonveg-starters/chickenchilli.jpeg"
-
-
+} from "lucide-react";
 
 function NonVegStarters() {
 
-  const nonVegStarters = [
+  const [nonVegStarters, setNonVegStarters] = useState([]);
 
-    {
-      name: "Chicken Tikka",
-      price: "₹980",
-      image: chickenTikka,
-    },
+  useEffect(() => {
 
-    {
-      name: "Tangdi Kebab",
-      price: "₹1,120",
-      image: tangdiKebab,
-    },
+    fetchNonVegStarters();
 
-    {
-      name: "Chicken Lollipop",
-      price: "₹920",
-      image: chickenLollipop,
-    },
+  }, []);
 
-    {
-      name: "Fish Fingers",
-      price: "₹1,280",
-      image: fishFingers,
-    },
+  const fetchNonVegStarters = async () => {
 
-    {
-      name: "Prawns Tempura",
-      price: "₹1,680",
-      image: prawnsTempura,
-    },
+    try {
 
-    {
-      name: "Mutton Seekh Kebab",
-      price: "₹1,420",
-      image: muttonSeekhKebab,
-    },
+      const response = await axios.get(
+        "http://localhost:5000/api/menu"
+      );
 
-    {
-      name: "Butter Garlic Prawns",
-      price: "₹1,820",
-      image: butterGarlicPrawns,
-    },
+      const starterItems = response.data.filter(
+        (item) =>
+          item.category?.trim().toLowerCase() === "starter" &&
+          item.type?.trim().toLowerCase() === "nonveg" &&
+          item.isAvailable === true
+      );
 
-    {
-      name: "Tandoori Chicken",
-      price: "₹1,180",
-      image: tandooriChicken,
-    },
+      setNonVegStarters(starterItems);
 
-    {
-      name: "Crispy Chicken Wings",
-      price: "₹960",
-      image: crispyChickenWings,
-    },
+    } catch (error) {
 
-    {
-      name: "Chilli Chicken",
-      price: "₹980",
-      image: chilliChicken,
-    },
+      console.log(error);
 
-  ]
+    }
 
+  };
 
+  const addToOrder = (item) => {
+
+    console.log("Added:", item);
+
+  };
 
   return (
 
@@ -109,8 +68,6 @@ function NonVegStarters() {
 
       </div>
 
-
-
       {/* GRID */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -121,19 +78,15 @@ function NonVegStarters() {
             key={index}
 
             className="
-
-            bg-[#fffaf0]
-            rounded-3xl
-            overflow-hidden
-            border
-            border-gray-200
-
-            hover:shadow-2xl
-            transition-all
-            duration-300
-
+              bg-[#fffaf0]
+              rounded-3xl
+              overflow-hidden
+              border
+              border-gray-200
+              hover:shadow-2xl
+              transition-all
+              duration-300
             "
-
           >
 
             {/* IMAGE */}
@@ -141,15 +94,8 @@ function NonVegStarters() {
             <img
               src={item.image}
               alt={item.name}
-
-              className="
-              h-52
-              w-full
-              object-cover
-              "
+              className="h-52 w-full object-cover"
             />
-
-
 
             {/* CONTENT */}
 
@@ -161,33 +107,26 @@ function NonVegStarters() {
 
               </h3>
 
-
-
               <div className="flex items-center justify-between">
 
                 <p className="text-[#D4A017] text-lg font-bold">
 
-                  {item.price}
+                  ₹{item.price}
 
                 </p>
-
-
 
                 <button
 
                   className="
-
-                  bg-[#D4A017]
-                  hover:bg-yellow-700
-
-                  text-white
-
-                  p-3
-                  rounded-full
-
-                  transition-all
-
+                    bg-[#D4A017]
+                    hover:bg-yellow-700
+                    text-white
+                    p-3
+                    rounded-full
+                    transition-all
                   "
+
+                  onClick={() => addToOrder(item)}
 
                 >
 
@@ -207,8 +146,8 @@ function NonVegStarters() {
 
     </div>
 
-  )
+  );
 
 }
 
-export default NonVegStarters
+export default NonVegStarters;
