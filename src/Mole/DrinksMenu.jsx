@@ -7,7 +7,9 @@ const DrinksMenu = () => {
   const [cocktails, setCocktails] = useState([]);
 
   useEffect(() => {
+
     fetchDrinksMenu();
+
   }, []);
 
   const fetchDrinksMenu = async () => {
@@ -20,14 +22,14 @@ const DrinksMenu = () => {
 
       const mocktailItems = data.filter(
         (item) =>
-          item.category === "Drinks" &&
-          item.type === "Mocktail"
+          item.category?.trim().toLowerCase() === "drinks" &&
+          item.type?.trim().toLowerCase() === "mocktail"
       );
 
       const cocktailItems = data.filter(
         (item) =>
-          item.category === "Drinks" &&
-          item.type === "Cocktail"
+          item.category?.trim().toLowerCase() === "drinks" &&
+          item.type?.trim().toLowerCase() === "cocktail"
       );
 
       setMocktails(mocktailItems);
@@ -66,10 +68,10 @@ const DrinksMenu = () => {
 
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-6">
 
-      {items.map((item, index) => (
+      {items.map((item) => (
 
         <div
-          key={index}
+          key={item._id}
           className="bg-[#fffaf3] rounded-3xl p-2 sm:p-3 border border-[#D4A017]/20 shadow-md cursor-pointer hover:scale-105 transition duration-300"
         >
 
@@ -134,6 +136,8 @@ const DrinksMenu = () => {
 
     <div className="w-full min-h-screen px-3 sm:px-6 lg:px-8 py-4">
 
+      {/* MOCKTAILS */}
+
       <div className="w-full bg-[#fffaf4] rounded-[24px] sm:rounded-[32px] border border-[#D4A017]/30 shadow-md p-4 sm:p-6 mb-6 sm:mb-10">
 
         <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-8">
@@ -155,6 +159,9 @@ const DrinksMenu = () => {
         <CardGrid items={mocktails} />
 
       </div>
+
+
+      {/* COCKTAILS */}
 
       <div className="w-full bg-[#fffaf4] rounded-[24px] sm:rounded-[32px] border border-[#D4A017]/30 shadow-md p-4 sm:p-6">
 

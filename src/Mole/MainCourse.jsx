@@ -7,8 +7,13 @@ const MainCourse = () => {
   const [nonVegMainCourse, setNonVegMainCourse] = useState([]);
 
   useEffect(() => {
+
     fetchMainCourseMenu();
+
   }, []);
+
+
+
 
   const fetchMainCourseMenu = async () => {
 
@@ -18,17 +23,23 @@ const MainCourse = () => {
         "http://localhost:5000/api/menu"
       );
 
+
+
       const vegItems = data.filter(
         (item) =>
-          item.category === "MainCourse" &&
-          item.type === "Veg"
+          item.category?.trim().toLowerCase() === "maincourse" &&
+          item.type?.trim().toLowerCase() === "veg"
       );
+
+
 
       const nonVegItems = data.filter(
         (item) =>
-          item.category === "MainCourse" &&
-          item.type === "NonVeg"
+          item.category?.trim().toLowerCase() === "maincourse" &&
+          item.type?.trim().toLowerCase() === "nonveg"
       );
+
+
 
       setVegMainCourse(vegItems);
 
@@ -41,6 +52,9 @@ const MainCourse = () => {
     }
 
   };
+
+
+
 
   const toggleAvailability = async (id) => {
 
@@ -60,22 +74,42 @@ const MainCourse = () => {
 
   };
 
+
+
+
   const CardGrid = ({ items }) => (
 
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-6">
 
-      {items.map((item, index) => (
+      {items.map((item) => (
 
         <div
-          key={index}
-          className="bg-white rounded-3xl p-2 sm:p-3 border border-[#D4A017]/20 shadow-md cursor-pointer hover:scale-105 transition duration-300"
+          key={item._id}
+          className="
+            bg-white
+            rounded-3xl
+            p-2 sm:p-3
+            border
+            border-[#D4A017]/20
+            shadow-md
+            cursor-pointer
+            hover:scale-105
+            transition
+            duration-300
+          "
         >
+
+          {/* IMAGE */}
 
           <img
             src={item.image}
             alt={item.name}
             className="w-full h-32 sm:h-44 lg:h-56 object-cover rounded-2xl"
           />
+
+
+
+          {/* CONTENT */}
 
           <div className="flex justify-between items-center mt-3 gap-2">
 
@@ -91,8 +125,14 @@ const MainCourse = () => {
 
             </div>
 
+
+
+            {/* TOGGLE BUTTON */}
+
             <button
+
               onClick={() => toggleAvailability(item._id)}
+
               className={`
                 relative w-14 h-8 rounded-full transition duration-300 flex-shrink-0
 
@@ -128,9 +168,14 @@ const MainCourse = () => {
 
   );
 
+
+
+
   return (
 
     <div className="w-full min-h-screen px-3 sm:px-6 lg:px-8 py-4">
+
+      {/* VEG MAIN COURSE */}
 
       <div className="w-full bg-[#fffaf4] rounded-[24px] sm:rounded-[32px] border border-[#D4A017]/30 shadow-md p-4 sm:p-6 mb-6 sm:mb-10">
 
@@ -153,6 +198,10 @@ const MainCourse = () => {
         <CardGrid items={vegMainCourse} />
 
       </div>
+
+
+
+      {/* NON VEG MAIN COURSE */}
 
       <div className="w-full bg-[#fffaf4] rounded-[24px] sm:rounded-[32px] border border-[#D4A017]/30 shadow-md p-4 sm:p-6">
 
@@ -179,6 +228,7 @@ const MainCourse = () => {
     </div>
 
   );
+
 };
 
 export default MainCourse;

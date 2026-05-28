@@ -1,10 +1,12 @@
 import express from "express";
+
 import Menu from "../models/MenuModel.js";
 
 const router = express.Router();
 
 
-// GET ALL MENU ITEMS
+
+/* GET ALL MENU ITEMS */
 
 router.get("/", async (req, res) => {
 
@@ -16,6 +18,8 @@ router.get("/", async (req, res) => {
 
   } catch (error) {
 
+    console.log(error);
+
     res.status(500).json({
       message: error.message,
     });
@@ -25,7 +29,50 @@ router.get("/", async (req, res) => {
 });
 
 
-// TOGGLE AVAILABILITY
+
+/* ADD NEW MENU ITEM */
+
+router.post("/", async (req, res) => {
+
+  console.log(req.body);
+
+  try {
+
+    const newItem = new Menu(req.body);
+
+    const savedItem = await newItem.save();
+
+    console.log(savedItem);
+
+    res.status(201).json({
+
+      success: true,
+
+      message: "Menu Item Added Successfully",
+
+      savedItem,
+
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+
+      success: false,
+
+      message: error.message,
+
+    });
+
+  }
+
+});
+
+
+
+/* TOGGLE AVAILABILITY */
 
 router.patch("/:id", async (req, res) => {
 
@@ -41,31 +88,12 @@ router.patch("/:id", async (req, res) => {
 
   } catch (error) {
 
-    res.status(500).json({
-      message: error.message,
-    });
-
-  }
-
-});
-
-
-// ADD NEW ITEM
-
-router.post("/", async (req, res) => {
-
-  try {
-
-    const newItem = new Menu(req.body);
-
-    const savedItem = await newItem.save();
-
-    res.status(201).json(savedItem);
-
-  } catch (error) {
+    console.log(error);
 
     res.status(500).json({
+
       message: error.message,
+
     });
 
   }

@@ -19,7 +19,6 @@ const menuSchema = new mongoose.Schema({
 
   type: {
     type: String,
-    required: true,
   },
 
   image: {
@@ -32,8 +31,13 @@ const menuSchema = new mongoose.Schema({
     default: true,
   },
 
+}, {
+  timestamps: true,
 });
 
-const Menu = mongoose.model("Menu", menuSchema);
+const Menu = mongoose.model(
+  "Menu",
+  menuSchema
+);
 
 export default Menu;

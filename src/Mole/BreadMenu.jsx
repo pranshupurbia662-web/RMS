@@ -6,7 +6,9 @@ const BreadMenu = () => {
   const [artisanBreads, setArtisanBreads] = useState([]);
 
   useEffect(() => {
+
     fetchBreadMenu();
+
   }, []);
 
   const fetchBreadMenu = async () => {
@@ -19,7 +21,7 @@ const BreadMenu = () => {
 
       const breadItems = data.filter(
         (item) =>
-          item.category === "Bread"
+          item.category?.trim().toLowerCase() === "bread"
       );
 
       setArtisanBreads(breadItems);
@@ -31,6 +33,8 @@ const BreadMenu = () => {
     }
 
   };
+
+
 
   const toggleAvailability = async (id) => {
 
@@ -50,11 +54,15 @@ const BreadMenu = () => {
 
   };
 
+
+
   return (
 
     <div className="w-full min-h-screen px-3 sm:px-6 lg:px-8 py-4">
 
       <div className="w-full bg-[#fffaf4] rounded-[32px] border border-[#D4A017]/30 shadow-md p-4 sm:p-6">
+
+        {/* HEADING */}
 
         <div className="flex items-center gap-4 mb-8">
 
@@ -70,14 +78,19 @@ const BreadMenu = () => {
 
         </div>
 
+
+        {/* GRID */}
+
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
 
-          {artisanBreads.map((item, index) => (
+          {artisanBreads.map((item) => (
 
             <div
-              key={index}
+              key={item._id}
               className="bg-white rounded-3xl p-3 border border-[#D4A017]/20 shadow-md"
             >
+
+              {/* IMAGE */}
 
               <img
                 src={item.image}
@@ -85,35 +98,51 @@ const BreadMenu = () => {
                 className="w-full h-44 object-cover rounded-2xl"
               />
 
+
+
+              {/* CONTENT */}
+
               <div className="flex justify-between items-center mt-3">
 
                 <div>
 
-                  <h2 className="uppercase text-sm font-semibold">
+                  <h2 className="uppercase text-sm font-semibold text-[#3b2a1a]">
                     {item.name}
                   </h2>
 
-                  <h4 className="text-[#B8860B] font-bold">
+                  <h4 className="text-[#B8860B] font-bold mt-1">
                     ₹{item.price}
                   </h4>
 
                 </div>
 
+
+
+                {/* TOGGLE BUTTON */}
+
                 <button
+
                   onClick={() => toggleAvailability(item._id)}
-                  className={`relative w-14 h-8 rounded-full ${
-                    item.isAvailable
-                      ? "bg-green-500"
-                      : "bg-gray-300"
-                  }`}
+
+                  className={`
+                    relative w-14 h-8 rounded-full transition duration-300
+                    ${
+                      item.isAvailable
+                        ? "bg-green-500"
+                        : "bg-gray-300"
+                    }
+                  `}
                 >
 
                   <div
-                    className={`absolute top-1 w-6 h-6 bg-white rounded-full ${
-                      item.isAvailable
-                        ? "right-1"
-                        : "left-1"
-                    }`}
+                    className={`
+                      absolute top-1 w-6 h-6 bg-white rounded-full transition duration-300
+                      ${
+                        item.isAvailable
+                          ? "right-1"
+                          : "left-1"
+                      }
+                    `}
                   ></div>
 
                 </button>
@@ -131,6 +160,7 @@ const BreadMenu = () => {
     </div>
 
   );
+
 };
 
 export default BreadMenu;

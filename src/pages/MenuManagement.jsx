@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   NavLink,
   Routes,
@@ -60,14 +61,20 @@ const MenuManagement = () => {
 
   ];
 
+
+
+  /* ADD ITEM */
+
   const handleAddItem = async () => {
 
     try {
 
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:5000/api/menu",
         formData
       );
+
+      console.log(response.data);
 
       alert("Item Added Successfully");
 
@@ -88,9 +95,13 @@ const MenuManagement = () => {
 
       console.log(error);
 
+      alert("Failed To Add Item");
+
     }
 
   };
+
+
 
   return (
 
@@ -233,23 +244,23 @@ const MenuManagement = () => {
                     Select Category
                   </option>
 
-                  <option value="Drinks">
+                  <option value="drinks">
                     Drinks
                   </option>
 
-                  <option value="Starter">
+                  <option value="starter">
                     Starter
                   </option>
 
-                  <option value="Main Course">
+                  <option value="maincourse">
                     Main Course
                   </option>
 
-                  <option value="Bread">
+                  <option value="bread">
                     Bread
                   </option>
 
-                  <option value="Dessert">
+                  <option value="dessert">
                     Dessert
                   </option>
 
@@ -257,9 +268,7 @@ const MenuManagement = () => {
 
                 {/* TYPE */}
 
-                <input
-                  type="text"
-                  placeholder="Type"
+                <select
                   value={formData.type}
                   onChange={(e) =>
                     setFormData({
@@ -268,7 +277,29 @@ const MenuManagement = () => {
                     })
                   }
                   className="p-3 rounded-xl border border-gray-300 outline-none"
-                />
+                >
+
+                  <option value="">
+                    Select Type
+                  </option>
+
+                  <option value="veg">
+                    Veg
+                  </option>
+
+                  <option value="nonveg">
+                    NonVeg
+                  </option>
+
+                  <option value="mocktail">
+                    Mocktail
+                  </option>
+
+                  <option value="cocktail">
+                    Cocktail
+                  </option>
+
+                </select>
 
                 {/* IMAGE */}
 
