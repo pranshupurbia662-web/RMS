@@ -122,7 +122,7 @@ router.get("/:id/download", async (req, res) => {
     doc
       .fontSize(10)
       .fillColor("#666")
-      .text("Royal Spice Restaurant | Jodhpur", { align: "center" });
+      .text("Royal Spice Restaurant | Udaipur", { align: "center" });
 
     doc.text("Visit Again", { align: "center" });
 
