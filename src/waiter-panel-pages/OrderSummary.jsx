@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import Header from "../waiter-components/Header";
 import { Receipt } from "lucide-react";
 
@@ -44,18 +45,20 @@ function OrderSummary() {
     0
   );
 
-  const placeOrder = () => {
-    const orderData = {
-      cartItems,
-      totalAmount,
-    };
+  const placeOrder = async () => {
+    try {
+      await axios.post("http://localhost:5000/api/orders", {
+        tableNumber: tableId,
+        items: cartItems,
+        totalAmount,
+        status: "Received",
+      });
 
-    sessionStorage.setItem(
-      `order-table-${tableId}`,
-      JSON.stringify(orderData)
-    );
-
-    navigate(`/waiter-panel/order-placed/${tableId}`);
+      navigate(`/waiter-panel/order-placed/${tableId}`);
+    } catch (error) {
+      console.log(error);
+      alert("Failed To Place Order");
+    }
   };
 
   return (
@@ -64,6 +67,7 @@ function OrderSummary() {
 
       <div className="max-w-6xl mx-auto px-6 mt-10">
         <div className="bg-white rounded-[32px] border border-gray-200 shadow-sm overflow-hidden">
+
           <div className="bg-[#D4A017] px-8 py-7">
             <div className="flex items-center justify-between">
               <div>
@@ -157,6 +161,7 @@ function OrderSummary() {
               </button>
             </div>
           </div>
+
         </div>
       </div>
     </div>
