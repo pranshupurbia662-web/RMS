@@ -6,7 +6,7 @@ import {
   Plus,
 } from "lucide-react";
 
-function Breads() {
+function Breads({ addToCart }) {
 
   const [breads, setBreads] = useState([]);
 
@@ -69,7 +69,6 @@ function Breads() {
 
           <div
             key={index}
-
             className="
               bg-[#fffaf0]
               rounded-3xl
@@ -87,7 +86,6 @@ function Breads() {
             <img
               src={item.image}
               alt={item.name}
-
               className="
                 h-52
                 w-full
@@ -124,7 +122,7 @@ function Breads() {
                     transition-all
                   "
 
-                  onClick={() => addToOrder(item)}
+                  onClick={() => addToCart(item)}
 
                 >
 

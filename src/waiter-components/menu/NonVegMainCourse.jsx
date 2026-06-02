@@ -6,7 +6,7 @@ import {
   Plus,
 } from "lucide-react";
 
-function NonVegMainCourse() {
+function NonVegMainCourse({ addToCart }) {
 
   const [nonVegMainCourse, setNonVegMainCourse] = useState([]);
 
@@ -41,12 +41,6 @@ function NonVegMainCourse() {
 
   };
 
-  const addToOrder = (item) => {
-
-    console.log("Added:", item);
-
-  };
-
   return (
 
     <div className="bg-white p-6 rounded-3xl border border-gray-200 mt-10">
@@ -76,7 +70,6 @@ function NonVegMainCourse() {
 
           <div
             key={item._id}
-
             className="
               bg-[#fffaf0]
               rounded-3xl
@@ -94,7 +87,6 @@ function NonVegMainCourse() {
             <img
               src={item.image}
               alt={item.name}
-
               className="
                 h-52
                 w-full
@@ -121,7 +113,6 @@ function NonVegMainCourse() {
                 </p>
 
                 <button
-
                   className="
                     bg-[#D4A017]
                     hover:bg-yellow-700
@@ -130,9 +121,7 @@ function NonVegMainCourse() {
                     rounded-full
                     transition-all
                   "
-
-                  onClick={() => addToOrder(item)}
-
+                  onClick={() => addToCart(item)}
                 >
 
                   <Plus size={18} />

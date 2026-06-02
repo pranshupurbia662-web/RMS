@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+
 import {
   useParams,
   useNavigate,
@@ -77,6 +78,41 @@ function AddOrder() {
     },
 
   ]
+
+  const [cart, setCart] = useState([]);
+
+const addToCart = (item) => {
+
+  const existingItem = cart.find(
+    (cartItem) => cartItem._id === item._id
+  );
+
+  if (existingItem) {
+
+    setCart(
+      cart.map((cartItem) =>
+        cartItem._id === item._id
+          ? {
+              ...cartItem,
+              quantity: cartItem.quantity + 1,
+            }
+          : cartItem
+      )
+    );
+
+  } else {
+
+    setCart([
+      ...cart,
+      {
+        ...item,
+        quantity: 1,
+      },
+    ]);
+
+  }
+
+};
 
 
 
@@ -200,36 +236,36 @@ function AddOrder() {
           <div className="p-6">
 
             {activeCategory === "mocktails" &&
-              <Mocktails />
-            }
+  <Mocktails addToCart={addToCart} />
+}
 
-            {activeCategory === "premiumbar" &&
-              <PremiumBars />
-            }
+{activeCategory === "premiumbar" &&
+  <PremiumBars addToCart={addToCart} />
+}
 
-            {activeCategory === "vegstarters" &&
-              <VegStarters />
-            }
+{activeCategory === "vegstarters" &&
+  <VegStarters addToCart={addToCart} />
+}
 
-            {activeCategory === "nonvegstarters" &&
-              <NonVegStarters />
-            }
+{activeCategory === "nonvegstarters" &&
+  <NonVegStarters addToCart={addToCart} />
+}
 
-            {activeCategory === "vegmaincourse" &&
-              <VegMainCourse />
-            }
+{activeCategory === "vegmaincourse" &&
+  <VegMainCourse addToCart={addToCart} />
+}
 
-            {activeCategory === "nonvegmaincourse" &&
-              <NonVegMainCourse />
-            }
+{activeCategory === "nonvegmaincourse" &&
+  <NonVegMainCourse addToCart={addToCart} />
+}
 
-            {activeCategory === "breads" &&
-              <Breads />
-            }
+{activeCategory === "breads" &&
+  <Breads addToCart={addToCart} />
+}
 
-            {activeCategory === "desserts" &&
-              <Desserts />
-            }
+{activeCategory === "desserts" &&
+  <Desserts addToCart={addToCart} />
+}
 
           </div>
 
@@ -241,39 +277,51 @@ function AddOrder() {
 
             <button
 
-              onClick={() =>
-                navigate(`/waiter-panel/order-summary/${tableId}`)
-              }
+  onClick={() =>
+    navigate(
+      `/waiter-panel/order-summary/${tableId}`,
+      {
+        state: {
+          cart,
+        },
+      }
+    )
+  }
 
-              className="
+  className="
 
-              bg-[#D4A017]
-              hover:bg-yellow-700
+    bg-[#D4A017]
+    hover:bg-yellow-700
 
-              text-white
+    text-white
 
-              px-8
-              py-4
+    px-8
+    py-4
 
-              rounded-2xl
+    rounded-2xl
 
-              text-lg
-              font-semibold
+    text-lg
+    font-semibold
 
-              shadow-lg
+    shadow-lg
 
-              transition-all
-              duration-300
+    transition-all
+    duration-300
 
-              hover:scale-105
+    hover:scale-105
 
-              "
+  "
 
-            >
+>
 
-              View Cart & Proceed
+  View Cart & Proceed (
+    {cart.reduce(
+      (total, item) => total + item.quantity,
+      0
+    )}
+  )
 
-            </button>
+</button>
 
           </div>
 

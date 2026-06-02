@@ -6,14 +6,12 @@ import {
   Plus,
 } from "lucide-react";
 
-function Mocktails() {
+function Mocktails({ addToCart }) {
 
   const [mocktails, setMocktails] = useState([]);
 
   useEffect(() => {
-
     fetchMocktails();
-
   }, []);
 
   const fetchMocktails = async () => {
@@ -41,17 +39,9 @@ function Mocktails() {
 
   };
 
-  const addToOrder = (item) => {
-
-    console.log("Added:", item);
-
-  };
-
   return (
 
     <div className="bg-white p-6 rounded-3xl border border-gray-200">
-
-      {/* HEADING */}
 
       <div className="flex items-center gap-3 mb-8">
 
@@ -61,22 +51,17 @@ function Mocktails() {
         />
 
         <h2 className="text-3xl font-bold text-gray-800">
-
           Signature Mocktails
-
         </h2>
 
       </div>
 
-      {/* GRID */}
-
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-        {mocktails.map((item, index) => (
+        {mocktails.map((item) => (
 
           <div
-            key={index}
-
+            key={item._id}
             className="
               bg-[#fffaf0]
               rounded-3xl
@@ -89,34 +74,25 @@ function Mocktails() {
             "
           >
 
-            {/* IMAGE */}
-
             <img
               src={item.image}
               alt={item.name}
               className="h-52 w-full object-cover"
             />
 
-            {/* CONTENT */}
-
             <div className="p-5">
 
               <h3 className="text-xl font-bold text-gray-800 mb-2">
-
                 {item.name}
-
               </h3>
 
               <div className="flex items-center justify-between">
 
                 <p className="text-[#D4A017] text-lg font-bold">
-
                   ₹{item.price}
-
                 </p>
 
                 <button
-
                   className="
                     bg-[#D4A017]
                     hover:bg-yellow-700
@@ -125,13 +101,12 @@ function Mocktails() {
                     rounded-full
                     transition-all
                   "
-
-                  onClick={() => addToOrder(item)}
-
+                  onClick={() => {
+                    console.log("PLUS CLICKED");
+                    addToCart(item);
+                  }}
                 >
-
                   <Plus size={18} />
-
                 </button>
 
               </div>

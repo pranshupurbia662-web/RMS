@@ -6,7 +6,7 @@ import {
   Plus,
 } from "lucide-react";
 
-function VegMainCourse() {
+function VegMainCourse({ addToCart }) {
 
   const [vegMainCourse, setVegMainCourse] = useState([]);
 
@@ -38,12 +38,6 @@ function VegMainCourse() {
       console.log(error);
 
     }
-
-  };
-
-  const addToOrder = (item) => {
-
-    console.log("Added:", item);
 
   };
 
@@ -120,7 +114,7 @@ function VegMainCourse() {
                     rounded-full
                     transition-all
                   "
-                  onClick={() => addToOrder(item)}
+                  onClick={() => addToCart(item)}
                 >
 
                   <Plus size={18} />

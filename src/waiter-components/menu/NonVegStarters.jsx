@@ -6,7 +6,7 @@ import {
   Plus,
 } from "lucide-react";
 
-function NonVegStarters() {
+function NonVegStarters({ addToCart }) {
 
   const [nonVegStarters, setNonVegStarters] = useState([]);
 
@@ -38,12 +38,6 @@ function NonVegStarters() {
       console.log(error);
 
     }
-
-  };
-
-  const addToOrder = (item) => {
-
-    console.log("Added:", item);
 
   };
 
@@ -126,7 +120,7 @@ function NonVegStarters() {
                     transition-all
                   "
 
-                  onClick={() => addToOrder(item)}
+                  onClick={() => addToCart(item)}
 
                 >
 

@@ -6,7 +6,7 @@ import {
   Plus,
 } from "lucide-react";
 
-function PremiumBars() {
+function PremiumBars({ addToCart }) {
 
   const [premiumBars, setPremiumBars] = useState([]);
 
@@ -38,12 +38,6 @@ function PremiumBars() {
       console.log(error);
 
     }
-
-  };
-
-  const addToOrder = (item) => {
-
-    console.log("Added:", item);
 
   };
 
@@ -126,7 +120,7 @@ function PremiumBars() {
                     transition-all
                   "
 
-                  onClick={() => addToOrder(item)}
+                  onClick={() => addToCart(item)}
 
                 >
 

@@ -6,7 +6,7 @@ import {
   Plus,
 } from "lucide-react";
 
-function Desserts() {
+function Desserts({ addToCart }) {
 
   const [desserts, setDesserts] = useState([]);
 
@@ -37,12 +37,6 @@ function Desserts() {
       console.log(error);
 
     }
-
-  };
-
-  const addToOrder = (item) => {
-
-    console.log("Added:", item);
 
   };
 
@@ -130,7 +124,7 @@ function Desserts() {
                     transition-all
                   "
 
-                  onClick={() => addToOrder(item)}
+                  onClick={() => addToCart(item)}
 
                 >
 
