@@ -1,18 +1,51 @@
-import React from 'react'
-import AdminCardTop from '../components/AdminCardTop'
-import OrderTable from '../components/OrderTable'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+import AdminCardTop from "../components/AdminCardTop";
+import OrderTable from "../components/OrderTable";
 
 const Dashboard = () => {
-  return (
-    <div>
-      <AdminCardTop/>
-      <div className='p-6'>
-        <OrderTable/>
-      </div>
-      
- 
-  </div>
-  )
-}
 
-export default Dashboard
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+
+    try {
+
+      const { data } = await axios.get(
+        "http://localhost:5000/api/orders"
+      );
+
+      setOrders(data);
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
+
+  return (
+
+    <div>
+
+      <AdminCardTop />
+
+      <div className="p-6">
+
+        <OrderTable orders={orders} />
+
+      </div>
+
+    </div>
+
+  );
+
+};
+
+export default Dashboard;

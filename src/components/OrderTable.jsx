@@ -1,57 +1,13 @@
-import React from 'react'
+import React from "react";
 
-const orderData = [
-  {
-    orderId: "#ORD-1001",
-    table: "T-01",
-    items: "2 Items",
-    status: "Preparing",
-    totalAmount: "₹1,250",
-    time: "10:30 AM",
-  },
-  {
-    orderId: "#ORD-1002",
-    table: "T-05",
-    items: "4 Items",
-    status: "Ready",
-    totalAmount: "₹2,100",
-    time: "10:45 AM",
-  },
-  {
-    orderId: "#ORD-1003",
-    table: "T-03",
-    items: "1 Item",
-    status: "Received",
-    totalAmount: "₹980",
-    time: "11:00 AM",
-  },
-  {
-    orderId: "#ORD-1004",
-    table: "T-07",
-    items: "5 Items",
-    status: "Preparing",
-    totalAmount: "₹3,450",
-    time: "11:20 AM",
-  },
-  {
-    orderId: "#ORD-1005",
-    table: "T-02",
-    items: "3 Items",
-    status: "Ready",
-    totalAmount: "₹1,780",
-    time: "11:40 AM",
-  },
-  {
-    orderId: "#ORD-1006",
-    table: "T-10",
-    items: "6 Items",
-    status: "Received",
-    totalAmount: "₹2,650",
-    time: "12:10 PM",
-  },
-];
-
-const OrderRow = ({ orderId, table, items, status, totalAmount, time }) => {
+const OrderRow = ({
+  orderId,
+  table,
+  items,
+  status,
+  totalAmount,
+  time,
+}) => {
   return (
     <tr className="border-b border-[#f1e6d6] hover:bg-[#fff8ec] transition">
 
@@ -89,11 +45,13 @@ const OrderRow = ({ orderId, table, items, status, totalAmount, time }) => {
       </td>
 
     </tr>
-  )
-}
+  );
+};
 
-const OrderTable = () => {
+const OrderTable = ({ orders }) => {
+
   return (
+
     <div className="w-full mt-6">
 
       <div className="overflow-x-auto rounded-2xl border border-[#eadfce] bg-white shadow-sm">
@@ -101,6 +59,7 @@ const OrderTable = () => {
         <table className="w-full min-w-[650px]">
 
           <thead>
+
             <tr className="bg-[#f8edd5ce]">
 
               <th className="px-4 py-4 text-left text-xs md:text-sm font-semibold text-[#7b5a11cf]">
@@ -128,20 +87,25 @@ const OrderTable = () => {
               </th>
 
             </tr>
+
           </thead>
 
           <tbody>
-            {orderData.map((order, index) => (
+
+            {orders.map((order, index) => (
+
               <OrderRow
-                key={index}
-                orderId={order.orderId}
-                table={order.table}
-                items={order.items}
+                key={order._id}
+                orderId={`#ORD-${1001 + index}`}
+                table={`T-${order.tableNumber}`}
+                items={`${order.items.length} Items`}
                 status={order.status}
-                totalAmount={order.totalAmount}
-                time={order.time}
+                totalAmount={`₹${order.totalAmount}`}
+                time={new Date(order.createdAt).toLocaleTimeString()}
               />
+
             ))}
+
           </tbody>
 
         </table>
@@ -149,7 +113,8 @@ const OrderTable = () => {
       </div>
 
     </div>
-  )
-}
 
-export default OrderTable
+  );
+};
+
+export default OrderTable;

@@ -1,45 +1,89 @@
-import React from 'react';
-
-const top = [
-  {
-    id: 1,
-    title: "Total Revenue",
-    value: "₹18,800",
-  },
-  {
-    id: 2,
-    title: "Total Orders",
-    value: "128",
-  },
-  {
-    id: 3,
-    title: "Avg Order Value",
-    value: "₹300",
-  },
-  {
-    id: 4,
-    title: "New Customers",
-    value: "50",
-  },
-  {
-    id: 5,
-    title: "Pending Orders",
-    value: "16",
-  },
-  {
-    id: 6,
-    title: "Completed Orders",
-    value: "92",
-  },
-];
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const OrdertopCard = () => {
+
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+
+    fetchOrders();
+
+  }, []);
+
+  const fetchOrders = async () => {
+
+    try {
+
+      const { data } = await axios.get(
+        "http://localhost:5000/api/orders"
+      );
+
+      setOrders(data);
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
+
+  const totalRevenue = orders.reduce(
+    (sum, order) => sum + order.totalAmount,
+    0
+  );
+
+  const totalOrders = orders.length;
+
+  const pendingOrders = orders.filter(
+    (order) =>
+      order.status === "Received" ||
+      order.status === "Preparing"
+  ).length;
+
+  const completedOrders = orders.filter(
+    (order) => order.status === "Ready"
+  ).length;
+
+  const avgOrderValue =
+    totalOrders > 0
+      ? Math.round(totalRevenue / totalOrders)
+      : 0;
+
+  const top = [
+    {
+      id: 1,
+      title: "Total Revenue",
+      value: `₹${totalRevenue}`,
+    },
+    {
+      id: 2,
+      title: "Total Orders",
+      value: totalOrders,
+    },
+    {
+      id: 3,
+      title: "Avg Order Value",
+      value: `₹${avgOrderValue}`,
+    },
+    {
+      id: 4,
+      title: "Pending Orders",
+      value: pendingOrders,
+    },
+    {
+      id: 5,
+      title: "Completed Orders",
+      value: completedOrders,
+    },
+  ];
 
   return (
 
     <div className="w-full py-4">
 
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-6">
+      <div className="grid grid-cols-2 xl:grid-cols-5 gap-3 md:gap-6">
 
         {top.map((item) => (
 
@@ -65,6 +109,7 @@ const OrdertopCard = () => {
     </div>
 
   );
-}
+
+};
 
 export default OrdertopCard;
