@@ -48,7 +48,14 @@ const OrderRow = ({
   );
 };
 
-const OrderTable = ({ orders }) => {
+const OrderTable = ({
+  orders = [],
+  showAll = false,
+}) => {
+
+  const displayOrders = showAll
+    ? orders
+    : orders.slice(0, 8);
 
   return (
 
@@ -92,7 +99,7 @@ const OrderTable = ({ orders }) => {
 
           <tbody>
 
-            {orders.map((order, index) => (
+            {displayOrders.map((order, index) => (
 
               <OrderRow
                 key={order._id}

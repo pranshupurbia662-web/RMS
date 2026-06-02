@@ -3,8 +3,8 @@ import {
   Search,
   CalendarArrowUp,
   HandCoins,
-  Table,
-  SquareUserRound,
+  Clock3,
+  CheckCircle,
 } from "lucide-react";
 
 const AdminCardTop = ({ orders = [] }) => {
@@ -12,15 +12,19 @@ const AdminCardTop = ({ orders = [] }) => {
   const totalOrders = orders.length;
 
   const totalRevenue = orders.reduce(
-    (total, order) => total + order.totalAmount,
+    (total, order) => total + (order.totalAmount || 0),
     0
   );
 
-  const activeTables = new Set(
-    orders.map((order) => order.tableNumber)
-  ).size;
+  const pendingOrders = orders.filter(
+    (order) =>
+      order.status === "Received" ||
+      order.status === "Preparing"
+  ).length;
 
-  const totalCustomers = activeTables;
+  const completedOrders = orders.filter(
+    (order) => order.status === "Ready"
+  ).length;
 
   const cardStyle =
     "cursor-pointer min-h-28 md:min-h-40 p-3 md:p-4 border-2 border-[#7b5a11cf] rounded-xl md:rounded-2xl flex justify-between bg-white shadow-[0_6px_30px_#D39A2350] hover:-translate-y-1 hover:scale-105 hover:shadow-[0_10px_45px_#D39A2380] transition-all duration-300";
@@ -28,7 +32,7 @@ const AdminCardTop = ({ orders = [] }) => {
   return (
     <div className="w-full px-3 md:px-8 py-4 md:py-6">
 
-      {/* Search */}
+      {/* Search Bar */}
 
       <div className="mb-6 md:mb-8">
 
@@ -72,7 +76,7 @@ const AdminCardTop = ({ orders = [] }) => {
 
         </div>
 
-        {/* Revenue */}
+        {/* Total Revenue */}
 
         <div className={cardStyle}>
 
@@ -94,46 +98,46 @@ const AdminCardTop = ({ orders = [] }) => {
 
         </div>
 
-        {/* Active Tables */}
+        {/* Pending Orders */}
 
         <div className={cardStyle}>
 
           <div>
 
             <h2 className="font-semibold text-sm md:text-2xl text-[#7b5a11cf]">
-              Active Tables
+              Pending Orders
             </h2>
 
             <p className="mt-4 md:mt-7 text-xl md:text-3xl font-semibold">
-              {activeTables}
+              {pendingOrders}
             </p>
 
           </div>
 
           <div className="self-end text-[#d49b21f9]">
-            <Table className="w-7 h-7 md:w-10 md:h-10" />
+            <Clock3 className="w-7 h-7 md:w-10 md:h-10" />
           </div>
 
         </div>
 
-        {/* Customers */}
+        {/* Completed Orders */}
 
         <div className={cardStyle}>
 
           <div>
 
             <h2 className="font-semibold text-sm md:text-2xl text-[#7b5a11cf]">
-              Total Customers
+              Completed Orders
             </h2>
 
             <p className="mt-4 md:mt-7 text-xl md:text-3xl font-semibold">
-              {totalCustomers}
+              {completedOrders}
             </p>
 
           </div>
 
           <div className="self-end text-[#d49b21f9]">
-            <SquareUserRound className="w-7 h-7 md:w-10 md:h-10" />
+            <CheckCircle className="w-7 h-7 md:w-10 md:h-10" />
           </div>
 
         </div>

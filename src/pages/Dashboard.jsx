@@ -38,7 +38,10 @@ const Dashboard = () => {
 
       <div className="p-6">
 
-        <OrderTable orders={orders} />
+        <OrderTable
+          orders={orders}
+          showAll={false}
+        />
 
       </div>
 
