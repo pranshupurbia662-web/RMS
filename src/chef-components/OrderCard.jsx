@@ -1,4 +1,4 @@
-function OrderCard(props) {
+function OrderCard({ order, updateStatus }) {
 
   return (
 
@@ -18,35 +18,94 @@ function OrderCard(props) {
         <div>
 
           <h2 className="font-bold text-gray-800 text-base sm:text-lg">
-            #{props.orderNumber}
+            Table {order.tableNumber}
           </h2>
 
           <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            {props.items} Items
+            {order.items?.length || 0} Items
           </p>
 
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div>
 
           <p className="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">
-            Table {props.table}
+            ₹{order.totalAmount}
           </p>
-
-          <button className="text-gray-400 text-lg sm:text-xl hover:text-[#d4a017] transition duration-300">
-            ⋮
-          </button>
 
         </div>
 
       </div>
 
+      <div className="mt-4 space-y-1">
+
+        {order.items?.map((item, index) => (
+
+          <p
+            key={index}
+            className="text-xs sm:text-sm text-gray-600"
+          >
+            {item.name} × {item.quantity}
+          </p>
+
+        ))}
+
+      </div>
+
       <p className="text-xs sm:text-sm text-gray-500 mt-4">
-        {props.time}
+        {new Date(order.createdAt).toLocaleTimeString()}
       </p>
 
+      <div className="mt-4 flex gap-2">
+
+        {order.status === "Received" && (
+
+          <button
+            onClick={() =>
+              updateStatus(order._id, "Preparing")
+            }
+            className="
+              bg-blue-500
+              hover:bg-blue-600
+              text-white
+              px-3
+              py-2
+              rounded-lg
+              text-sm
+            "
+          >
+            Start Preparing
+          </button>
+
+        )}
+
+        {order.status === "Preparing" && (
+
+          <button
+            onClick={() =>
+              updateStatus(order._id, "Ready")
+            }
+            className="
+              bg-green-500
+              hover:bg-green-600
+              text-white
+              px-3
+              py-2
+              rounded-lg
+              text-sm
+            "
+          >
+            Mark Ready
+          </button>
+
+        )}
+
+      </div>
+
     </div>
-  )
+
+  );
+
 }
 
-export default OrderCard
+export default OrderCard;

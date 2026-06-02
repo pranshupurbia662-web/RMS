@@ -7,6 +7,7 @@ import connectDB from "./config/Db.js";
 import menuRoutes from "./routes/MenuRoutes.js";
 import tableRoutes from "./routes/TableRoutes.js";
 import staffRoutes from "./routes/StaffRoutes.js";
+import orderRoutes from "./routes/OrderRoutes.js";
 
 dotenv.config();
 
@@ -26,6 +27,9 @@ app.use("/api/tables", tableRoutes);
 
 // STAFF ROUTES
 app.use("/api/staff", staffRoutes);
+
+// ORDER ROUTES
+app.use("/api/orders", orderRoutes);
 
 app.get("/", (req, res) => {
   res.send("API Running Successfully");
