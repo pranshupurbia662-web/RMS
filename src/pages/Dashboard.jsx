@@ -34,7 +34,7 @@ const Dashboard = () => {
 
     <div>
 
-      <AdminCardTop />
+      <AdminCardTop orders={orders} />
 
       <div className="p-6">
 
@@ -45,7 +45,6 @@ const Dashboard = () => {
     </div>
 
   );
-
 };
 
 export default Dashboard;

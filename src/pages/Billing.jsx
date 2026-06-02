@@ -32,6 +32,12 @@ const Billing = () => {
       year: "numeric",
     });
   };
+  const downloadInvoice = (id) => {
+  window.open(
+    `http://localhost:5000/api/invoices/${id}/download`,
+    "_blank"
+  );
+};
 
   const groupedInvoices = invoices.reduce((groups, invoice) => {
     const date = formatDate(invoice.createdAt);
@@ -125,11 +131,14 @@ const Billing = () => {
                           {formatDate(invoice.createdAt)}
                         </td>
 
-                        <td className="px-6 py-6 text-center whitespace-nowrap">
-                          <button className="flex justify-center items-center w-full text-[#d89216] hover:text-[#b77709] transition">
-                            <Download size={20} />
-                          </button>
-                        </td>
+                       <td className="px-6 py-6 text-center whitespace-nowrap">
+  <button
+    onClick={() => downloadInvoice(invoice._id)}
+    className="flex justify-center items-center w-full text-[#d89216] hover:text-[#b77709] transition"
+  >
+    <Download size={20} />
+  </button>
+</td>
                       </tr>
                     ))}
                   </tbody>
