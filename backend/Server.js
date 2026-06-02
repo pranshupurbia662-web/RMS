@@ -8,6 +8,7 @@ import menuRoutes from "./routes/MenuRoutes.js";
 import tableRoutes from "./routes/TableRoutes.js";
 import staffRoutes from "./routes/StaffRoutes.js";
 import orderRoutes from "./routes/OrderRoutes.js";
+import invoiceRoutes from "./routes/InvoiceRoutes.js";
 
 dotenv.config();
 
@@ -30,6 +31,9 @@ app.use("/api/staff", staffRoutes);
 
 // ORDER ROUTES
 app.use("/api/orders", orderRoutes);
+
+// INVOICE ROUTES
+app.use("/api/invoices", invoiceRoutes);
 
 app.get("/", (req, res) => {
   res.send("API Running Successfully");

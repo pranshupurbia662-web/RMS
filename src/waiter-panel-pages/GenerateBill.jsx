@@ -22,6 +22,7 @@ function GenerateBill() {
   const orderId = location.state?.orderId;
 
   const [order, setOrder] = useState(null);
+  const [paymentMode, setPaymentMode] = useState("Cash");
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -49,6 +50,15 @@ function GenerateBill() {
 
   const completeBill = async () => {
     try {
+      await axios.post("http://localhost:5000/api/invoices", {
+        tableNumber: Number(tableId),
+        items: cartItems,
+        subtotal,
+        gst,
+        grandTotal,
+        paymentMode,
+      });
+
       const tableResponse = await axios.get("http://localhost:5000/api/tables");
 
       const currentTable = tableResponse.data.find(
@@ -109,9 +119,7 @@ function GenerateBill() {
 
             <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden">
               <div className="grid grid-cols-3 bg-gray-100 px-6 py-4">
-                <h3 className="font-bold text-gray-700 text-lg">
-                  Item
-                </h3>
+                <h3 className="font-bold text-gray-700 text-lg">Item</h3>
 
                 <h3 className="font-bold text-gray-700 text-lg text-center">
                   Qty
@@ -151,9 +159,7 @@ function GenerateBill() {
             <div className="mt-8 bg-[#fffaf0] border border-gray-200 rounded-3xl p-8">
               <div className="space-y-5">
                 <div className="flex items-center justify-between">
-                  <p className="text-gray-600 text-lg">
-                    Subtotal
-                  </p>
+                  <p className="text-gray-600 text-lg">Subtotal</p>
 
                   <p className="font-semibold text-xl">
                     ₹{subtotal}
@@ -161,9 +167,7 @@ function GenerateBill() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <p className="text-gray-600 text-lg">
-                    GST (18%)
-                  </p>
+                  <p className="text-gray-600 text-lg">GST (18%)</p>
 
                   <p className="font-semibold text-xl">
                     ₹{gst}
@@ -179,6 +183,23 @@ function GenerateBill() {
                     ₹{grandTotal}
                   </h2>
                 </div>
+              </div>
+
+              <div className="mt-8">
+                <label className="block text-gray-700 font-semibold mb-3">
+                  Select Payment Method
+                </label>
+
+                <select
+                  value={paymentMode}
+                  onChange={(e) => setPaymentMode(e.target.value)}
+                  className="w-full border border-gray-300 rounded-2xl px-5 py-4 text-lg focus:outline-none focus:border-[#D4A017]"
+                >
+                  <option value="Cash">Cash</option>
+                  <option value="UPI">UPI</option>
+                  <option value="Card">Card</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
 
               <div className="flex justify-center mt-10">
