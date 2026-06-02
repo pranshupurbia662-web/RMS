@@ -11,12 +11,13 @@ import {
 } from "react-router-dom";
 
 function OrderPlaced() {
-  
-const navigate = useNavigate();
-const { tableId } = useParams();
-const location = useLocation();
+  const navigate = useNavigate();
 
-const orderData = location.state;
+  const { tableId } = useParams();
+
+  const location = useLocation();
+
+  const orderId = location.state?.orderId;
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
@@ -102,7 +103,9 @@ const orderData = location.state;
             <button
               onClick={() =>
                 navigate(`/waiter-panel/notifications/${tableId}`, {
-                  state: orderData,
+                  state: {
+                    orderId,
+                  },
                 })
               }
               className="

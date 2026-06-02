@@ -14,6 +14,9 @@ function OrderSummary() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const orderId = location.state?.orderId;
+  const addMore = location.state?.addMore;
+
   const [cartItems, setCartItems] = useState(
     location.state?.cart || []
   );
@@ -46,18 +49,47 @@ function OrderSummary() {
   );
 
   const placeOrder = async () => {
-    try {
-      await axios.post("http://localhost:5000/api/orders", {
-        tableNumber: tableId,
-        items: cartItems,
-        totalAmount,
-        status: "Received",
-      });
+    if (cartItems.length === 0) {
+      alert("Please add at least one item");
+      return;
+    }
 
-      navigate(`/waiter-panel/order-placed/${tableId}`);
+    const items = cartItems.map((item) => ({
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+    }));
+
+    try {
+      if (addMore && orderId) {
+        await axios.put(
+          `http://localhost:5000/api/orders/${orderId}/add-items`,
+          { items }
+        );
+
+        navigate(`/waiter-panel/order-placed/${tableId}`, {
+          state: { orderId },
+        });
+      } else {
+        const response = await axios.post(
+          "http://localhost:5000/api/orders",
+          {
+            tableNumber: Number(tableId),
+            items,
+            totalAmount,
+            status: "Received",
+          }
+        );
+
+        navigate(`/waiter-panel/order-placed/${tableId}`, {
+          state: {
+            orderId: response.data._id,
+          },
+        });
+      }
     } catch (error) {
       console.log(error);
-      alert("Failed To Place Order");
+      alert("Failed to place order");
     }
   };
 
@@ -67,12 +99,11 @@ function OrderSummary() {
 
       <div className="max-w-6xl mx-auto px-6 mt-10">
         <div className="bg-white rounded-[32px] border border-gray-200 shadow-sm overflow-hidden">
-
           <div className="bg-[#D4A017] px-8 py-7">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-4xl font-bold text-white">
-                  Order Summary
+                  {addMore ? "Additional Order Summary" : "Order Summary"}
                 </h1>
 
                 <p className="text-yellow-100 mt-2 text-lg">
@@ -90,7 +121,7 @@ function OrderSummary() {
             <div className="bg-[#fffaf0] rounded-3xl border border-gray-200 overflow-hidden">
               <div className="px-6 py-5 border-b border-gray-200">
                 <h2 className="text-2xl font-bold text-gray-800">
-                  Ordered Items
+                  {addMore ? "Additional Items" : "Ordered Items"}
                 </h2>
               </div>
 
@@ -157,11 +188,10 @@ function OrderSummary() {
                 onClick={placeOrder}
                 className="bg-[#D4A017] hover:bg-yellow-700 text-white px-14 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-md"
               >
-                Place Order
+                {addMore ? "Add To Existing Order" : "Place Order"}
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </div>

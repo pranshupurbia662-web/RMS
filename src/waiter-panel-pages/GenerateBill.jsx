@@ -1,7 +1,12 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import Header from "../waiter-components/Header";
 
 import {
   useParams,
+  useLocation,
+  useNavigate,
 } from "react-router-dom";
 
 import {
@@ -11,16 +16,61 @@ import {
 
 function GenerateBill() {
   const { tableId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const savedOrder = JSON.parse(
-    sessionStorage.getItem(`order-table-${tableId}`)
-  );
+  const orderId = location.state?.orderId;
 
-  const cartItems = savedOrder?.cartItems || [];
-  const subtotal = savedOrder?.totalAmount || 0;
+  const [order, setOrder] = useState(null);
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/orders");
+
+        const currentOrder = response.data.find(
+          (item) => item._id === orderId
+        );
+
+        setOrder(currentOrder);
+      } catch (error) {
+        console.log("Bill Fetch Error:", error);
+      }
+    };
+
+    fetchOrder();
+  }, [orderId]);
+
+  const cartItems = order?.items || [];
+  const subtotal = order?.totalAmount || 0;
 
   const gst = Math.round(subtotal * 0.18);
   const grandTotal = subtotal + gst;
+
+  const completeBill = async () => {
+    try {
+      const tableResponse = await axios.get("http://localhost:5000/api/tables");
+
+      const currentTable = tableResponse.data.find(
+        (table) => table.tableNo === Number(tableId)
+      );
+
+      if (currentTable) {
+        await axios.patch(
+          `http://localhost:5000/api/tables/${currentTable._id}/status`,
+          {
+            status: "Available",
+          }
+        );
+      }
+
+      alert("Invoice generated successfully");
+      navigate("/waiter-panel");
+    } catch (error) {
+      console.log("Invoice Error:", error);
+      alert("Failed to generate invoice");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-10">
@@ -49,7 +99,7 @@ function GenerateBill() {
           <div className="p-8">
             <div className="bg-[#fffaf0] border border-gray-200 rounded-3xl p-6 mb-8">
               <h2 className="text-3xl font-bold text-gray-800">
-                Table {tableId}
+                Table {order?.tableNumber || tableId}
               </h2>
 
               <p className="text-gray-500 mt-2">
@@ -77,9 +127,9 @@ function GenerateBill() {
                   No items found
                 </p>
               ) : (
-                cartItems.map((item) => (
+                cartItems.map((item, index) => (
                   <div
-                    key={item._id}
+                    key={index}
                     className="grid grid-cols-3 px-6 py-5 border-b border-gray-100"
                   >
                     <p className="text-gray-800 font-medium">
@@ -132,7 +182,10 @@ function GenerateBill() {
               </div>
 
               <div className="flex justify-center mt-10">
-                <button className="bg-[#D4A017] hover:bg-yellow-700 text-white px-16 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 hover:scale-105 flex items-center gap-3">
+                <button
+                  onClick={completeBill}
+                  className="bg-[#D4A017] hover:bg-yellow-700 text-white px-16 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 hover:scale-105 flex items-center gap-3"
+                >
                   <CreditCard size={22} />
                   Generate Invoice
                 </button>
