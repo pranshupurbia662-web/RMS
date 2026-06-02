@@ -5,13 +5,18 @@ import {
 } from "lucide-react";
 
 import {
-  useParams,
   useNavigate,
+  useParams,
+  useLocation,
 } from "react-router-dom";
 
 function OrderPlaced() {
-  const navigate = useNavigate();
-  const { tableId } = useParams();
+  
+const navigate = useNavigate();
+const { tableId } = useParams();
+const location = useLocation();
+
+const orderData = location.state;
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
@@ -96,7 +101,9 @@ function OrderPlaced() {
 
             <button
               onClick={() =>
-                navigate("/waiter-panel/notifications")
+                navigate(`/waiter-panel/notifications/${tableId}`, {
+                  state: orderData,
+                })
               }
               className="
               mt-10

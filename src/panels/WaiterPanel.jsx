@@ -33,13 +33,14 @@ function WaiterPanel() {
         element={<OrderPlaced />}
       />
 
+      {/* UPDATED ROUTE */}
       <Route
-        path="notifications"
+        path="notifications/:tableId"
         element={<Notifications />}
       />
 
       <Route
-        path="generate-bill"
+        path="generate-bill/:tableId"
         element={<GenerateBill />}
       />
     </Routes>

@@ -1,20 +1,32 @@
 import Header from "../waiter-components/Header";
 
+
 import {
   Bell,
   ChefHat,
 } from "lucide-react";
 
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+  useParams,
+  useLocation,
+} from "react-router-dom";
 
 function Notifications() {
-  const navigate = useNavigate();
+
+const navigate = useNavigate();
+const { tableId } = useParams();
+const location = useLocation();
+
+const orderData = location.state;
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
+
       <Header step={5} />
 
       <div className="max-w-4xl mx-auto px-6 mt-14">
+
         <div
           className="
           bg-white
@@ -25,6 +37,7 @@ function Notifications() {
           overflow-hidden
           "
         >
+
           <div
             className="
             bg-[#D4A017]
@@ -32,8 +45,11 @@ function Notifications() {
             py-8
             "
           >
+
             <div className="flex items-center justify-between">
+
               <div>
+
                 <h1 className="text-4xl font-bold text-white">
                   Notifications
                 </h1>
@@ -41,6 +57,7 @@ function Notifications() {
                 <p className="text-yellow-100 mt-2 text-lg">
                   Restaurant order updates
                 </p>
+
               </div>
 
               <div
@@ -50,15 +67,20 @@ function Notifications() {
                 rounded-2xl
                 "
               >
+
                 <Bell
                   size={38}
                   className="text-white"
                 />
+
               </div>
+
             </div>
+
           </div>
 
           <div className="p-10">
+
             <div
               className="
               bg-[#fffaf0]
@@ -69,6 +91,7 @@ function Notifications() {
               text-center
               "
             >
+
               <div
                 className="
                 w-20
@@ -82,14 +105,16 @@ function Notifications() {
                 mb-6
                 "
               >
+
                 <ChefHat
                   size={40}
                   className="text-green-600"
                 />
+
               </div>
 
               <h2 className="text-3xl font-bold text-gray-800">
-                Table 1 is Ready To Serve
+                Table {tableId} is Ready To Serve
               </h2>
 
               <p className="text-gray-500 mt-4 text-lg">
@@ -98,8 +123,10 @@ function Notifications() {
               </p>
 
               <button
-                onClick={() =>
-                  navigate("/waiter-panel/generate-bill")
+               onClick={() =>
+                  navigate(`/waiter-panel/generate-bill/${tableId}`, {
+                    state: orderData,
+                  })
                 }
                 className="
                 mt-8
@@ -118,10 +145,15 @@ function Notifications() {
               >
                 View Details
               </button>
+
             </div>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
   );
 }
