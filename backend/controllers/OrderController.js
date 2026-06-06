@@ -33,6 +33,32 @@ export const getOrders = async (req, res) => {
   }
 };
 
+export const getOrderByTable = async (req, res) => {
+  try {
+
+    const order = await Order.findOne({
+      tableNumber: Number(req.params.tableNo),
+    }).sort({ createdAt: -1 });
+
+    if (!order) {
+
+      return res.status(404).json({
+        message: "Order not found",
+      });
+
+    }
+
+    res.status(200).json(order);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+};
+
 export const updateOrderStatus = async (req, res) => {
   try {
 

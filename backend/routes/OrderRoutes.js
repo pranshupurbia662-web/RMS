@@ -5,6 +5,7 @@ import {
   getOrders,
   updateOrderStatus,
   addItemsToOrder,
+  getOrderByTable,
 } from "../controllers/OrderController.js";
 
 const router = express.Router();
@@ -12,6 +13,9 @@ const router = express.Router();
 router.post("/", createOrder);
 
 router.get("/", getOrders);
+
+// Table number se active order find karne ke liye
+router.get("/table/:tableNo", getOrderByTable);
 
 router.put("/:id", updateOrderStatus);
 
