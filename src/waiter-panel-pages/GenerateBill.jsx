@@ -49,39 +49,62 @@ function GenerateBill() {
   const grandTotal = subtotal + gst;
 
   const completeBill = async () => {
-    try {
-      await axios.post("http://localhost:5000/api/invoices", {
+  try {
+
+    // Invoice Create
+    await axios.post(
+      "http://localhost:5000/api/invoices",
+      {
         tableNumber: Number(tableId),
         items: cartItems,
         subtotal,
         gst,
         grandTotal,
         paymentMode,
-      });
+      }
+    );
 
-      const tableResponse = await axios.get("http://localhost:5000/api/tables");
+    // Order Complete Mark Karo
+    await axios.put(
+      `http://localhost:5000/api/orders/${orderId}`,
+      {
+        status: "Completed",
+      }
+    );
 
-      const currentTable = tableResponse.data.find(
-        (table) => table.tableNo === Number(tableId)
+    // Table Available Karo
+    const tableResponse = await axios.get(
+      "http://localhost:5000/api/tables"
+    );
+
+    const currentTable = tableResponse.data.find(
+      (table) =>
+        table.tableNo === Number(tableId)
+    );
+
+    if (currentTable) {
+
+      await axios.patch(
+        `http://localhost:5000/api/tables/${currentTable._id}/status`,
+        {
+          status: "Available",
+        }
       );
 
-      if (currentTable) {
-        await axios.patch(
-          `http://localhost:5000/api/tables/${currentTable._id}/status`,
-          {
-            status: "Available",
-          }
-        );
-      }
-
-      alert("Invoice generated successfully");
-      navigate("/waiter-panel");
-    } catch (error) {
-      console.log("Invoice Error:", error);
-      alert("Failed to generate invoice");
     }
-  };
 
+    alert("Invoice generated successfully");
+
+    navigate("/waiter-panel");
+
+  } catch (error) {
+
+    console.log("Invoice Error:", error);
+
+    alert("Failed to generate invoice");
+
+  }
+};
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-10">
       <Header step={6} />
