@@ -6,7 +6,11 @@ import {
   Plus,
 } from "lucide-react";
 
-function Breads({ addToCart }) {
+function Breads({
+  increaseQty,
+  decreaseQty,
+  getItemQty,
+}) {
 
   const [breads, setBreads] = useState([]);
 
@@ -44,8 +48,6 @@ function Breads({ addToCart }) {
 
     <div className="bg-white p-6 rounded-3xl border border-gray-200 mt-10">
 
-      {/* HEADING */}
-
       <div className="flex items-center gap-3 mb-8">
 
         <Wheat
@@ -54,21 +56,17 @@ function Breads({ addToCart }) {
         />
 
         <h2 className="text-3xl font-bold text-gray-800">
-
           Artisan Breads
-
         </h2>
 
       </div>
 
-      {/* GRID */}
-
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-        {breads.map((item, index) => (
+        {breads.map((item) => (
 
           <div
-            key={index}
+            key={item._id}
             className="
               bg-[#fffaf0]
               rounded-3xl
@@ -81,8 +79,6 @@ function Breads({ addToCart }) {
             "
           >
 
-            {/* IMAGE */}
-
             <img
               src={item.image}
               alt={item.name}
@@ -93,42 +89,73 @@ function Breads({ addToCart }) {
               "
             />
 
-            {/* CONTENT */}
-
             <div className="p-5">
 
               <h3 className="text-xl font-bold text-gray-800 mb-2">
-
                 {item.name}
-
               </h3>
 
               <div className="flex items-center justify-between">
 
                 <p className="text-[#D4A017] text-lg font-bold">
-
                   ₹{item.price}
-
                 </p>
 
-                <button
+                {getItemQty(item._id) === 0 ? (
 
-                  className="
-                    bg-[#D4A017]
-                    hover:bg-yellow-700
-                    text-white
-                    p-3
-                    rounded-full
-                    transition-all
-                  "
+                  <button
+                    className="
+                      bg-[#D4A017]
+                      hover:bg-yellow-700
+                      text-white
+                      p-3
+                      rounded-full
+                      transition-all
+                    "
+                    onClick={() => increaseQty(item)}
+                  >
+                    <Plus size={18} />
+                  </button>
 
-                  onClick={() => addToCart(item)}
+                ) : (
 
-                >
+                  <div className="flex items-center gap-3">
 
-                  <Plus size={18} />
+                    <button
+                      onClick={() => decreaseQty(item)}
+                      className="
+                        bg-red-500
+                        text-white
+                        w-8
+                        h-8
+                        rounded-full
+                        font-bold
+                      "
+                    >
+                      -
+                    </button>
 
-                </button>
+                    <span className="font-bold text-lg">
+                      {getItemQty(item._id)}
+                    </span>
+
+                    <button
+                      onClick={() => increaseQty(item)}
+                      className="
+                        bg-green-500
+                        text-white
+                        w-8
+                        h-8
+                        rounded-full
+                        font-bold
+                      "
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                )}
 
               </div>
 

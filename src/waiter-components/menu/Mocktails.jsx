@@ -6,7 +6,11 @@ import {
   Plus,
 } from "lucide-react";
 
-function Mocktails({ addToCart }) {
+function Mocktails({
+  increaseQty,
+  decreaseQty,
+  getItemQty,
+}) {
 
   const [mocktails, setMocktails] = useState([]);
 
@@ -92,22 +96,61 @@ function Mocktails({ addToCart }) {
                   ₹{item.price}
                 </p>
 
-                <button
-                  className="
-                    bg-[#D4A017]
-                    hover:bg-yellow-700
-                    text-white
-                    p-3
-                    rounded-full
-                    transition-all
-                  "
-                  onClick={() => {
-                    console.log("PLUS CLICKED");
-                    addToCart(item);
-                  }}
-                >
-                  <Plus size={18} />
-                </button>
+                {getItemQty(item._id) === 0 ? (
+
+                  <button
+                    className="
+                      bg-[#D4A017]
+                      hover:bg-yellow-700
+                      text-white
+                      p-3
+                      rounded-full
+                      transition-all
+                    "
+                    onClick={() => increaseQty(item)}
+                  >
+                    <Plus size={18} />
+                  </button>
+
+                ) : (
+
+                  <div className="flex items-center gap-3">
+
+                    <button
+                      onClick={() => decreaseQty(item)}
+                      className="
+                        bg-red-500
+                        text-white
+                        w-8
+                        h-8
+                        rounded-full
+                        font-bold
+                      "
+                    >
+                      -
+                    </button>
+
+                    <span className="font-bold text-lg">
+                      {getItemQty(item._id)}
+                    </span>
+
+                    <button
+                      onClick={() => increaseQty(item)}
+                      className="
+                        bg-green-500
+                        text-white
+                        w-8
+                        h-8
+                        rounded-full
+                        font-bold
+                      "
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                )}
 
               </div>
 

@@ -23,6 +23,45 @@ function AddOrder() {
   const [activeCategory, setActiveCategory] = useState("mocktails");
   const [cart, setCart] = useState([]);
 
+  const getItemQty = (id) => {
+    const item = cart.find((i) => i._id === id);
+    return item ? item.quantity : 0;
+  };
+
+  const increaseQty = (item) => {
+    const existingItem = cart.find((cartItem) => cartItem._id === item._id);
+
+    if (existingItem) {
+      setCart(
+        cart.map((cartItem) =>
+          cartItem._id === item._id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        )
+      );
+    } else {
+      setCart([...cart, { ...item, quantity: 1 }]);
+    }
+  };
+
+  const decreaseQty = (item) => {
+    const existingItem = cart.find((cartItem) => cartItem._id === item._id);
+
+    if (!existingItem) return;
+
+    if (existingItem.quantity === 1) {
+      setCart(cart.filter((cartItem) => cartItem._id !== item._id));
+    } else {
+      setCart(
+        cart.map((cartItem) =>
+          cartItem._id === item._id
+            ? { ...cartItem, quantity: cartItem.quantity - 1 }
+            : cartItem
+        )
+      );
+    }
+  };
+
   const categories = [
     { name: "Mocktails", value: "mocktails" },
     { name: "Premium Bar", value: "premiumbar" },
@@ -34,33 +73,6 @@ function AddOrder() {
     { name: "Desserts", value: "desserts" },
   ];
 
-  const addToCart = (item) => {
-    const existingItem = cart.find(
-      (cartItem) => cartItem._id === item._id
-    );
-
-    if (existingItem) {
-      setCart(
-        cart.map((cartItem) =>
-          cartItem._id === item._id
-            ? {
-                ...cartItem,
-                quantity: cartItem.quantity + 1,
-              }
-            : cartItem
-        )
-      );
-    } else {
-      setCart([
-        ...cart,
-        {
-          ...item,
-          quantity: 1,
-        },
-      ]);
-    }
-  };
-
   const goToSummary = () => {
     if (cart.length === 0) {
       alert("Please add at least one item");
@@ -68,11 +80,7 @@ function AddOrder() {
     }
 
     navigate(`/waiter-panel/order-summary/${tableId}`, {
-      state: {
-        cart,
-        orderId,
-        addMore,
-      },
+      state: { cart, orderId, addMore },
     });
   };
 
@@ -82,23 +90,25 @@ function AddOrder() {
 
       <div className="max-w-7xl mx-auto px-6 mt-10">
         <div className="bg-white rounded-[32px] border border-gray-200 shadow-sm overflow-hidden">
+
+          {/* Page Header */}
           <div className="bg-[#D4A017] px-8 py-7">
             <h1 className="text-4xl font-bold text-white">
               {addMore ? "Add More Order" : "Add Order"}
             </h1>
-
             <p className="text-yellow-100 mt-2 text-lg">
               Taking order for Table {tableId}
             </p>
           </div>
 
+          {/* Category Tabs */}
           <div className="p-6 border-b border-gray-200">
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3">
               {categories.map((category, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveCategory(category.value)}
-                  className={`px-6 py-3 rounded-2xl text-sm font-semibold transition-all duration-300 hover:scale-105
+                  className={`px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all duration-300 hover:scale-105
                     ${
                       activeCategory === category.value
                         ? "bg-[#D4A017] text-white shadow-lg"
@@ -111,49 +121,44 @@ function AddOrder() {
             </div>
           </div>
 
+          {/* Menu Items */}
           <div className="p-6">
             {activeCategory === "mocktails" && (
-              <Mocktails addToCart={addToCart} />
+              <Mocktails increaseQty={increaseQty} decreaseQty={decreaseQty} getItemQty={getItemQty} />
             )}
-
             {activeCategory === "premiumbar" && (
-              <PremiumBars addToCart={addToCart} />
+              <PremiumBars increaseQty={increaseQty} decreaseQty={decreaseQty} getItemQty={getItemQty} />
             )}
-
             {activeCategory === "vegstarters" && (
-              <VegStarters addToCart={addToCart} />
+              <VegStarters increaseQty={increaseQty} decreaseQty={decreaseQty} getItemQty={getItemQty} />
             )}
-
             {activeCategory === "nonvegstarters" && (
-              <NonVegStarters addToCart={addToCart} />
+              <NonVegStarters increaseQty={increaseQty} decreaseQty={decreaseQty} getItemQty={getItemQty} />
             )}
-
             {activeCategory === "vegmaincourse" && (
-              <VegMainCourse addToCart={addToCart} />
+              <VegMainCourse increaseQty={increaseQty} decreaseQty={decreaseQty} getItemQty={getItemQty} />
             )}
-
             {activeCategory === "nonvegmaincourse" && (
-              <NonVegMainCourse addToCart={addToCart} />
+              <NonVegMainCourse increaseQty={increaseQty} decreaseQty={decreaseQty} getItemQty={getItemQty} />
             )}
-
             {activeCategory === "breads" && (
-              <Breads addToCart={addToCart} />
+              <Breads increaseQty={increaseQty} decreaseQty={decreaseQty} getItemQty={getItemQty} />
             )}
-
             {activeCategory === "desserts" && (
-              <Desserts addToCart={addToCart} />
+              <Desserts increaseQty={increaseQty} decreaseQty={decreaseQty} getItemQty={getItemQty} />
             )}
           </div>
 
+          {/* Cart Button */}
           <div className="px-6 pb-8 flex justify-end">
             <button
               onClick={goToSummary}
               className="bg-[#D4A017] hover:bg-yellow-700 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-lg transition-all duration-300 hover:scale-105"
             >
-              View Cart & Proceed (
-              {cart.reduce((total, item) => total + item.quantity, 0)})
+              View Cart & Proceed ({cart.reduce((total, item) => total + item.quantity, 0)})
             </button>
           </div>
+
         </div>
       </div>
     </div>
